@@ -16,8 +16,9 @@ class GeoDB(
 
         // 这里用与 Python 类似的 ON CONFLICT 语法，并用 COALESCE 保留已有的插件字段
         val cols = listOf(
-            "id", "path", "formattedAddress",
-            "province", "city", "district", "township", "street", "streetNumber"
+            "id", "path", "formattedAddress","country", "countryCode",
+            "province", "city", "district", "street", "streetNumber",
+            "postalCode"
         )
 
         val placeholders = cols.joinToString(",") { "?" }
@@ -28,24 +29,28 @@ class GeoDB(
             ON CONFLICT(id) DO UPDATE SET
               path=excluded.path,
               formattedAddress=excluded.formattedAddress,
+              country=excluded.country,
+              countryCode=excluded.countryCode,
               province=excluded.province,
               city=excluded.city,
               district=excluded.district,
-              township=excluded.township,
               street=excluded.street,
-              streetNumber=excluded.streetNumber
+              streetNumber=excluded.streetNumber,
+              postalCode=excluded.postalCode
         """.trimIndent()
 
         val args: Array<Any?> = arrayOf(
             rec.id,
             rec.path,
             rec.formattedAddress,
+            rec.country,
+            rec.countryCode,
             rec.province,
             rec.city,
             rec.district,
-            rec.township,
             rec.street,
             rec.streetNumber,
+            rec.postalCode
         )
 
         db.execSQL(sql, args)

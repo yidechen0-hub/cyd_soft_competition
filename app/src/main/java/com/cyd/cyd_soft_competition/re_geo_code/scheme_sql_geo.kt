@@ -7,12 +7,14 @@ class scheme_sql_geo {
         path TEXT NOT NULL,
         
         formattedAddress TEXT,
+        country TEXT,
+        countryCode TEXT,
         province TEXT,
         city TEXT,
         district TEXT,
-        township TEXT,
         street TEXT,
-        streetNumber TEXT
+        streetNumber TEXT,
+        postalCode TEXT
     );
     
     CREATE UNIQUE INDEX IF NOT EXISTS idx_photos_path ON geo(path);

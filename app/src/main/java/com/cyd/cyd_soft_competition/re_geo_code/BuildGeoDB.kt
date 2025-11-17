@@ -32,18 +32,21 @@ class BuildGeoDB {
             // 如果你需要用经纬度反查地址（结合之前的 ReGeoCodeUtils）
             if (location.latitude != null && location.longitude != null) {
                 // 调用逆地理编码 API（注意：需再次开启子线程，避免阻塞主线程）
-                val res = ReGeoCodeUtils.getAddressByLatLng(location.longitude, location.latitude,)
-                val addressInfo = res.addressInfo
+                val res = BigDataCloudReGeoUtils.getGlobalAddress(location.latitude,location.longitude )
+                var addressInfo = res.addressInfo
+
                 val rec = GeoRecord(
                     location.id,
                     location.path,
                     addressInfo?.formattedAddress,
+                    addressInfo?.country,
+                    addressInfo?.countryCode,
                     addressInfo?.province,
                     addressInfo?.city,
                     addressInfo?.district,
-                    addressInfo?.township,
                     addressInfo?.street,
                     addressInfo?.streetNumber,
+                    addressInfo?.postalCode
                 )
                 geoDB.upsert(rec)
                 Thread.sleep(100)

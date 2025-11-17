@@ -1,8 +1,9 @@
 package com.cyd.cyd_soft_competition.re_geo_code
 
-data class GeoRecord(
-    val id : String,
-    val path: String,
+/**
+ * 全球地址详情类（适配国内外地址结构）
+ */
+data class AddressInfo(
     val formattedAddress: String?, // 完整结构化地址
     val country: String?, // 国家（如：美国、中国）
     val countryCode: String?, // 国家代码（如：US、CN）
@@ -13,4 +14,3 @@ data class GeoRecord(
     val streetNumber: String?, // 门牌号（如：1600、6号）
     val postalCode: String? // 邮编（如：94043、100102）
 )
-
