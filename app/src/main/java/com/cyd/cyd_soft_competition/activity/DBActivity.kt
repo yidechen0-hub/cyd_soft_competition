@@ -16,9 +16,9 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import java.io.File
 import com.cyd.cyd_soft_competition.contentdb.BuildDB
 import com.cyd.cyd_soft_competition.contentdb.DBBuildConfig
+import java.io.File
 
 class DBActivity : ComponentActivity() {
     private val TAG = "DBActivity"

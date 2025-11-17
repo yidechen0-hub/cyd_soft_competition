@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center_horizontal">
+
+    <!-- 标题 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="经纬度反查地址"
+        android:textSize="20sp"
+        android:layout_marginBottom="32dp"/>
+
+    <!-- 经度输入框 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="经度："
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"/>
+
+        <EditText
+            android:id="@+id/et_longitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="例如：116.480881（高德GCJ02坐标系）"
+            android:inputType="numberDecimal|numberSigned"
+            android:textSize="14sp"
+            android:padding="8dp"
+            android:background="@android:drawable/editbox_background_normal"/>
+    </LinearLayout>
+
+    <!-- 纬度输入框 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="纬度："
+            android:textSize="16sp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"/>
+
+        <EditText
+            android:id="@+id/et_latitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="例如：39.989410（高德GCJ02坐标系）"
+            android:inputType="numberDecimal|numberSigned"
+            android:textSize="14sp"
+            android:padding="8dp"
+            android:background="@android:drawable/editbox_background_normal"/>
+    </LinearLayout>
+
+    <!-- 查询按钮 -->
+    <Button
+        android:id="@+id/btn_query"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="查询地址"
+        android:textSize="16sp"
+        android:padding="12dp"
+        android:backgroundTint="@color/design_default_color_primary"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="32dp"/>
+
+    <!-- 结果显示区域 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/tv_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="查询结果将显示在这里..."
+            android:textSize="15sp"
+            android:lineSpacingExtra="4dp"/>
+    </ScrollView>
+
+</LinearLayout>

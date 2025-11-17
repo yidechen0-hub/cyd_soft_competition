@@ -20,7 +20,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".CydApplication"
+        android:name=".activity.CydApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -30,17 +30,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cyd_soft_competition">
         <activity
-            android:name=".MainActivity"
-            android:exported="true"/>
-
-        <activity android:name="com.cyd.cyd_android.activity.DBActivity"
-           android:exported="true">
+            android:name=".activity.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-    
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activity.DBActivity"
+           android:exported="true"/>
+        <activity android:name=".activity.ReGeoCodeActivity"
+            android:exported="true"/>
+
 
     </application>
 

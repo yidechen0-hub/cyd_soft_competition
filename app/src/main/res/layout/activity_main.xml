@@ -1,42 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="20dp">
+    android:background="@android:color/white"
+    tools:context=".activity.MainActivity">
 
-    <Button
-        android:id="@+id/btnAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="调用 Python 加法"
-        android:textSize="18sp"/>
 
-    <Button
-        android:id="@+id/btnGreet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="调用 Python 问候"
-        android:textSize="18sp"
-        android:layout_marginTop="15dp"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        android:layout_marginTop="68dp"/>
 
-    <Button
-        android:id="@+id/btnNumpy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="调用 numpy 运算"
-        android:textSize="18sp"
-        android:layout_marginTop="15dp"/>
-
-    <TextView
-        android:id="@+id/tvResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="结果显示区"
-        android:textSize="18sp"
-        android:layout_marginTop="30dp"
-        android:textColor="@android:color/black"/>
-
-</LinearLayout>
+</RelativeLayout>

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">cyd_soft_competition</string>
+    <string name="build_db">建库</string>
+    <string name="get_geo">反查经纬度</string>
 </resources>

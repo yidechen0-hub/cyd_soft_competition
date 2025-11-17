@@ -1,9 +1,9 @@
-package com.cyd.cyd_soft_competition
+package com.cyd.cyd_soft_competition.activity
 
 import android.app.Application
+import android.util.Log
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
-import android.util.Log
 
 class CydApplication : Application() {
     private val TAG = "ChaquopyKotlinDemo"

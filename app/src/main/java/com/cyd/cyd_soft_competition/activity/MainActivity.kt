@@ -1,0 +1,40 @@
+package com.cyd.cyd_soft_competition.activity
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import com.chaquo.python.PyObject
+import com.chaquo.python.Python
+import com.cyd.cyd_soft_competition.R
+import com.cyd.cyd_soft_competition.adapter.AiTestItem
+import com.cyd.cyd_soft_competition.adapter.mainAdapter
+import com.cyd.cyd_soft_competition.databinding.ActivityMainBinding
+
+class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding // 视图绑定
+    private val TAG = "mianActivity"
+    private lateinit var pythonModule: PyObject // Python 模块实例
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // 初始化 Python 模块（my_python.py 对应模块名 "my_python"）
+        val python = Python.getInstance()
+        pythonModule = python.getModule("photo_exif_reader")
+
+        val mainTests = listOf(
+            AiTestItem(resources.getString(R.string.build_db), DBActivity::class.java),
+            AiTestItem(resources.getString(R.string.get_geo), ReGeoCodeActivity::class.java),
+        )
+        binding.rvMain.layoutManager = GridLayoutManager(this, 2)
+        binding.rvMain.adapter = mainAdapter(this, mainTests)
+
+
+
+
+    }
+
+
+}
