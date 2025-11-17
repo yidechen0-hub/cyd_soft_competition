@@ -39,7 +39,8 @@ object ReGeoCodeUtils {
         // 2. 拼接请求参数
         val params = StringBuilder()
         try {
-            params.append("location=").append(URLEncoder.encode("$longitude,$latitude", "UTF-8"))
+            val locationStr = String.format("%.6f,%.6f", longitude, latitude)
+            params.append("location=").append(locationStr)
             params.append("&key=").append(URLEncoder.encode(AMAP_API_KEY, "UTF-8"))
             params.append("&extensions=base") // base：基础地址（精简）；all：包含 POI 等详细信息
             params.append("&output=json") // 返回格式：json（默认）

@@ -31,13 +31,6 @@ class MetaExtractor(
         } catch (_: Exception) {
             return null
         }
-        Log.d("cyd", "=== 原始文件 GPS 标签详情 ===")
-        Log.d("cyd", "file.absolutePath:${file.absolutePath}")
-        Log.d("cyd", "TAG_GPS_LATITUDE: ${exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE)}")
-        Log.d("cyd", "TAG_GPS_LATITUDE_REF: ${exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE_REF)}")
-        Log.d("cyd", "TAG_GPS_LONGITUDE: ${exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE)}")
-        Log.d("cyd", "TAG_GPS_LONGITUDE_REF: ${exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF)}")
-        Log.d("cyd", "==========================")
 
         // Dimensions
         val width = exif.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, -1)
@@ -92,39 +85,6 @@ class MetaExtractor(
             }
         }
 
-//        // GPS
-//        var latitude: Double? = null
-//        var longitude: Double? = null
-//        var locationSrc: String? = null
-//        var accuracy: Double? = null
-//
-//        try {
-//            val lat = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE)
-//            val latRef = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE_REF)
-//            val lon = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE)
-//            val lonRef = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF)
-//
-//            if (lat != null && latRef != null && lon != null && lonRef != null) {
-//                latitude = dmsToDeg(lat, latRef)
-//                longitude = dmsToDeg(lon, lonRef)
-//                if (latitude != null && longitude != null) {
-//                    locationSrc = "exif"
-//                }
-//            }
-//
-//            // 非标准的精度字段：没有统一规范，这里简单尝试自定义 Tag
-//            val accStr = exif.getAttribute("GPSHPositioningError")
-//                ?: exif.getAttribute("GPSDOP")
-//            if (accStr != null) {
-//                accuracy = try {
-//                    accStr.toDouble()
-//                } catch (_: Exception) {
-//                    null
-//                }
-//            }
-//        } catch (_: Exception) {
-//            // ignore gps errors
-//        }
         // GPS
         var latitude: Double? = null
         var longitude: Double? = null

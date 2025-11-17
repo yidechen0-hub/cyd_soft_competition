@@ -10,13 +10,14 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.cyd.cyd_soft_competition.databinding.ActivityMainBinding
+import com.cyd.cyd_soft_competition.contentdb.BuildDB
 import com.cyd.cyd_soft_competition.re_geo_code.ReGeoCodeUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.cyd.cyd_soft_competition.databinding.ActivityReGeoCodeBinding
+import com.cyd.cyd_soft_competition.re_geo_code.BuildGeoDB
 
 class ReGeoCodeActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -24,7 +25,9 @@ class ReGeoCodeActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var etLongitude: EditText
     private lateinit var etLatitude: EditText
     private lateinit var btnQuery: Button
+    private lateinit var btnBuildGeo: Button
     private lateinit var tvResult: TextView
+    private val buildGeoDB: BuildGeoDB by lazy { BuildGeoDB() }
 
     private lateinit var binding: ActivityReGeoCodeBinding
 
@@ -39,6 +42,21 @@ class ReGeoCodeActivity : AppCompatActivity(), View.OnClickListener {
         setListener()
         // 预设示例经纬度（方便测试）
         setDefaultLatLng()
+        btnBuildGeo.setOnClickListener {
+            Thread {
+                try {
+                    buildGeoDB.build(applicationContext)
+                    runOnUiThread {
+                        Toast.makeText(this, "扫描完成并写入数据库！", Toast.LENGTH_LONG).show()
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    runOnUiThread {
+                        Toast.makeText(this, "发生错误: ${e.message}", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }.start()
+        }
     }
 
     /**
@@ -49,6 +67,7 @@ class ReGeoCodeActivity : AppCompatActivity(), View.OnClickListener {
         etLatitude = binding.etLatitude
         btnQuery = binding.btnQuery
         tvResult = binding.tvResult
+        btnBuildGeo = binding.btnBuildGeo
     }
 
     /**
