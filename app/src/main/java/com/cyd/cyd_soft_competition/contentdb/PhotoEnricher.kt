@@ -1,4 +1,4 @@
-package com.cyd.cyd_android.contentdb
+package com.cyd.cyd_soft_competition.contentdb
 
 // Kotlin 里你可以用接口 + DI 实现“插件”
 interface PhotoEnricher {

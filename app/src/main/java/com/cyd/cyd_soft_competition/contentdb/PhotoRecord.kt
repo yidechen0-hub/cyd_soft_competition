@@ -1,4 +1,4 @@
-package com.cyd.cyd_android.contentdb
+package com.cyd.cyd_soft_competition.contentdb
 
 data class PhotoRecord(
     // Core identity

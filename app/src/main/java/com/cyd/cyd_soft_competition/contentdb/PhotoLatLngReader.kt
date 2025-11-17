@@ -1,7 +1,7 @@
-package com.cyd.cyd_android.contentdb
+package com.cyd.cyd_soft_competition.contentdb
 
 import android.util.Log
-import androidx.exifinterface.media.ExifInterface
+import android.media.ExifInterface
 import java.io.File
 
 class PhotoLatLngReader {
@@ -100,7 +100,7 @@ class PhotoLatLngReader {
             if (ref.equals("S", ignoreCase = true) || ref.equals("W", ignoreCase = true)) {
                 coordinate = -coordinate
             }
-
+            Log.i(TAG, "coordinate:$coordinate")
             return coordinate
         } catch (e: Exception) {
             Log.e(TAG, "解析 GPS 坐标失败: ${e.message}")

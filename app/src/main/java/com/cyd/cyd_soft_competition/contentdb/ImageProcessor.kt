@@ -2,9 +2,7 @@ package com.cyd.cyd_soft_competition.contentdb
 
 // 在 Activity 或 Fragment 中使用
 import android.content.Context
-import android.net.Uri
 import android.util.Log
-import androidx.core.net.toUri
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
 import java.io.File

@@ -1,4 +1,4 @@
-package com.cyd.cyd_android.activity
+package com.cyd.cyd_soft_competition.activity
 
 import android.Manifest
 import android.app.Activity
@@ -17,13 +17,13 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import java.io.File
-import com.cyd.cyd_android.contentdb.BuildDB
-import com.cyd.cyd_android.contentdb.DBBuildConfig
+import com.cyd.cyd_soft_competition.contentdb.BuildDB
+import com.cyd.cyd_soft_competition.contentdb.DBBuildConfig
 
 class DBActivity : ComponentActivity() {
     private val TAG = "DBActivity"
     // 新增：存储要解析 GPS 的照片路径（需根据实际场景赋值，如扫描后获取）
-    private var photoPath: String = "/storage/emulated/0/DCIM/test/G0148656.JPG"
+    private var photoPath: String = "/storage/emulated/0/DCIM/test/G0158758.JPG"
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,34 +56,17 @@ class DBActivity : ComponentActivity() {
         startBuildProcess()
     }
 
-//    override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//
-//        if (requestCode == 1001 &&
-//            grantResults.isNotEmpty() &&
-//            grantResults[0] == PackageManager.PERMISSION_GRANTED
-//        ) {
-//            startBuildProcess()
-//        } else {
-//            Toast.makeText(this, "没有权限，无法读取照片", Toast.LENGTH_SHORT).show()
-//        }
-//    }
 
     /** 真正开始执行 build(context, cfg) */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun startBuildProcess() {
         Toast.makeText(this, "开始扫描，请稍等…", Toast.LENGTH_SHORT).show()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            requestManageExternalStoragePermission(this)
-            return  // 先授权，再执行后续扫描（需调整逻辑：授权后再触发扫描）
-        }
 
-        val dcim = File("/storage/emulated/0/DCIM/")  // 扫描 DCIM 文件夹
+        requestManageExternalStoragePermission(this)
+
+
+        val dcim = File("/storage/emulated/0/DCIM/test")  // 扫描 DCIM 文件夹
 
         val cfg = DBBuildConfig(
             root = dcim,

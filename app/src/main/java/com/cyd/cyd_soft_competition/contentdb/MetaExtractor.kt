@@ -1,18 +1,17 @@
-package com.cyd.cyd_android.contentdb
+package com.cyd.cyd_soft_competition.contentdb
 
 import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.exifinterface.media.ExifInterface
-import com.cyd.cyd_android.contentdb.util.cleanStr
-import com.cyd.cyd_android.contentdb.util.dmsToDeg
-import com.cyd.cyd_android.contentdb.util.fileTimes
-import com.cyd.cyd_android.contentdb.util.filenameDateTime
-import com.cyd.cyd_android.contentdb.util.md5File
-import com.cyd.cyd_android.contentdb.util.mimeFromSuffix
-import com.cyd.cyd_android.contentdb.util.parseExifDateTime
-import com.cyd.cyd_soft_competition.contentdb.ImageProcessor
+import android.media.ExifInterface
+import com.cyd.cyd_soft_competition.contentdb.util.cleanStr
+import com.cyd.cyd_soft_competition.contentdb.util.fileTimes
+import com.cyd.cyd_soft_competition.contentdb.util.filenameDateTime
+import com.cyd.cyd_soft_competition.contentdb.util.md5File
+import com.cyd.cyd_soft_competition.contentdb.util.mimeFromSuffix
+import com.cyd.cyd_soft_competition.contentdb.util.parseExifDateTime
+
 
 import java.io.File
 import java.security.MessageDigest
@@ -132,50 +131,12 @@ class MetaExtractor(
         var locationSrc: String? = null
         var accuracy: Double? = null
 
-//        try {
-//            // ✅ 1. 优先用 ExifInterface 内置的 getLatLong / latLong
-//            val latLong = exif.latLong   // 需要较新 androidx.exifinterface 版本
-//            if (latLong != null && latLong.size == 2) {
-//                latitude = latLong[0].toDouble()
-//                longitude = latLong[1].toDouble()
-//                locationSrc = "exif"
-//            } else {
-//                // ✅ 2. 兜底：自己解析 DMS 字符串
-//                val latStr = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE)
-//                val latRef = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE_REF)
-//                val lonStr = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE)
-//                val lonRef = exif.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF)
-//
-//                if (latStr != null && latRef != null && lonStr != null && lonRef != null) {
-//                    latitude = dmsToDeg(latStr, latRef)
-//                    longitude = dmsToDeg(lonStr, lonRef)
-//                    if (latitude != null && longitude != null) {
-//                        locationSrc = "exif"
-//                    }
-//                }
-//            }
-//
-//            // 3. 非标准精度字段（可能没有）
-//            val accStr = exif.getAttribute("GPSHPositioningError")
-//                ?: exif.getAttribute("GPSDOP")
-//            if (accStr != null) {
-//                accuracy = accStr.toDoubleOrNull()
-//            }
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
-
-//        val processor = ImageProcessor(context)
-//        val private_path = processor.processExternalImage(file.absolutePath)
 
         PhotoLatLngReader().readLatLngSync(file.absolutePath)?.let { exifReader ->
             latitude = exifReader.latitude
             longitude = exifReader.longitude
         }
-//        processor.processImageGpsPython(private_path!!).let {
-//            latitude = it?.first
-//            longitude = it?.second
-//        }
+
 
         // File system
         val (fileMtime, fileCtime) = fileTimes(file)

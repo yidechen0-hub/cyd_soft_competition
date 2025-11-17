@@ -1,9 +1,9 @@
-package com.cyd.cyd_android.contentdb
+package com.cyd.cyd_soft_competition.contentdb
 
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.cyd.cyd_android.contentdb.util.iterImages
+import com.cyd.cyd_soft_competition.contentdb.util.iterImages
 
 class BuildDB {
     @RequiresApi(Build.VERSION_CODES.O)

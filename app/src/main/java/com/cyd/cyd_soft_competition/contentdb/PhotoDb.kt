@@ -1,4 +1,4 @@
-package com.cyd.cyd_android.contentdb
+package com.cyd.cyd_soft_competition.contentdb
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
