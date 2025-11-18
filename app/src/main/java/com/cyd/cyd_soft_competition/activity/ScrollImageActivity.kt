@@ -18,7 +18,7 @@ class ScrollImageActivity : AppCompatActivity() {
 
         // 设置点击事件（跳转示例：跳转到 TargetActivity）
         clickableIcon.setOnClickListener {
-            val intent = Intent(this, TargetActivity::class.java)
+            val intent = Intent(this, AnimVideoActivity::class.java)
             startActivity(intent)
             // 可选：添加跳转动画
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
