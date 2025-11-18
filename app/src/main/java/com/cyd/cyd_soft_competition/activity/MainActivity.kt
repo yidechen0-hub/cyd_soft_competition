@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         val mainTests = listOf(
             AiTestItem(resources.getString(R.string.build_db), DBActivity::class.java),
             AiTestItem(resources.getString(R.string.get_geo), ReGeoCodeActivity::class.java),
+            AiTestItem(resources.getString(R.string.test), ScrollImageActivity::class.java),
         )
         binding.rvMain.layoutManager = GridLayoutManager(this, 2)
         binding.rvMain.adapter = mainAdapter(this, mainTests)

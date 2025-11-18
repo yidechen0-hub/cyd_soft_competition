@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical">
+
+    <!-- 底图容器：RelativeLayout 用于图标绝对定位 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 长图底图：scaleType="fitXY" 适应屏幕宽度并完整显示高度 -->
+        <ImageView
+            android:id="@+id/iv_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/background"
+            android:scaleType="fitXY"
+            android:contentDescription="@string/background_image" />
+
+        <!-- 可点击图标：跟随底图滑动，通过 layout_* 属性定位 -->
+        <ImageView
+            android:id="@+id/iv_clickable_icon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/change"
+            android:contentDescription="@string/clickable_icon"
+            android:layout_marginLeft="300dp"
+            android:layout_marginTop="200dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="10dp" />
+
+    </RelativeLayout>
+
+</ScrollView>

@@ -2,4 +2,7 @@
     <string name="app_name">cyd_soft_competition</string>
     <string name="build_db">建库</string>
     <string name="get_geo">反查经纬度</string>
+    <string name="background_image">背景图</string>
+    <string name="clickable_icon">可点击图标</string>
+    <string name="test">测试</string>
 </resources>
