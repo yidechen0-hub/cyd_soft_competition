@@ -69,5 +69,9 @@ dependencies {
     androidTestImplementation libs.androidx.espresso.core
 
     implementation("androidx.exifinterface:exifinterface:1.4.1")
+    // 正确配置：用 annotationProcessor 替代 kapt
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+
 
 }

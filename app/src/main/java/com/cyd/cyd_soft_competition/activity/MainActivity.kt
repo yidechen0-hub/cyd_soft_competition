@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
             AiTestItem(resources.getString(R.string.build_db), DBActivity::class.java),
             AiTestItem(resources.getString(R.string.get_geo), ReGeoCodeActivity::class.java),
             AiTestItem(resources.getString(R.string.test), ScrollImageActivity::class.java),
+            AiTestItem(resources.getString(R.string.mutil_img), MutilImgActivity::class.java),
+            AiTestItem(resources.getString(R.string.mask_img), MaskDemoActivity::class.java),
         )
         binding.rvMain.layoutManager = GridLayoutManager(this, 2)
         binding.rvMain.adapter = mainAdapter(this, mainTests)

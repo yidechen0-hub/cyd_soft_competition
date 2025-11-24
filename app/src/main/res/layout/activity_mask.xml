@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- 直接使用自定义 MaskImageView（需添加完整包名） -->
+    <com.cyd.cyd_soft_competition.mask.MaskImageView
+        android:id="@+id/maskImageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f0f0f0" />
+</LinearLayout>

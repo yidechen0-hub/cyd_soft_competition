@@ -50,6 +50,10 @@
         <activity android:name=".activity.AnimVideoActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".activity.MutilImgActivity"
+            android:exported="true"/>
+        <activity android:name=".activity.MaskDemoActivity"
+            android:exported="true"/>
 
 
     </application>

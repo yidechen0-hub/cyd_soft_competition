@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 图片之间的垂直间距（与布局中的 android:spacing="16dp" 对应） -->
+    <dimen name="image_spacing">16dp</dimen>
+</resources>

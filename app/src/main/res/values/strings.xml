@@ -5,4 +5,6 @@
     <string name="background_image">背景图</string>
     <string name="clickable_icon">可点击图标</string>
     <string name="test">测试</string>
+    <string name="mutil_img">多图展示</string>
+    <string name="mask_img">掩码图</string>
 </resources>
