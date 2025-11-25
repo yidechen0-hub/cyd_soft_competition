@@ -8,6 +8,7 @@ import com.chaquo.python.Python
 import com.cyd.cyd_soft_competition.R
 import com.cyd.cyd_soft_competition.adapter.AiTestItem
 import com.cyd.cyd_soft_competition.adapter.mainAdapter
+import com.cyd.cyd_soft_competition.competitionActivity.EntryActivity
 import com.cyd.cyd_soft_competition.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
             AiTestItem(resources.getString(R.string.test), ScrollImageActivity::class.java),
             AiTestItem(resources.getString(R.string.mutil_img), MutilImgActivity::class.java),
             AiTestItem(resources.getString(R.string.mask_img), MaskDemoActivity::class.java),
+            AiTestItem(resources.getString(R.string.entry), EntryActivity::class.java),
         )
         binding.rvMain.layoutManager = GridLayoutManager(this, 2)
         binding.rvMain.adapter = mainAdapter(this, mainTests)

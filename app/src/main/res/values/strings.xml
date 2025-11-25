@@ -7,4 +7,5 @@
     <string name="test">测试</string>
     <string name="mutil_img">多图展示</string>
     <string name="mask_img">掩码图</string>
+    <string name="entry">比赛入口</string>
 </resources>

@@ -1,179 +1,262 @@
 package com.cyd.cyd_soft_competition.mask
 
-// 文件名：MaskImageView.kt（独立文件，放在任意包下）
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
 import androidx.appcompat.widget.AppCompatImageView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
 import java.io.File
 
-/**
- * 独立的掩码ImageView：白色像素显示目标图，非白色像素透明
- * 用法：setTargetImage（设置目标图） + setMaskImage（设置掩码图）
- */
 class MaskImageView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : AppCompatImageView(context, attrs, defStyleAttr) {
-    // 混合模式画笔（核心：目标图仅在掩码白色区域显示）
+    private val TAG = "MaskImageView"
     private val maskPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN)
+        isFilterBitmap = true
+        alpha = 255
     }
-    // 目标图片（需要被掩码控制的图片）
     private var targetBitmap: Bitmap? = null
-    // 掩码图片（黑白PNG，白色=显示，非白色=透明）
     private var maskBitmap: Bitmap? = null
-    // 绘制区域（铺满控件）
     private val drawRect = RectF()
-    private val TAG = "MaskImageView"
 
     init {
-        // 开启硬件加速，提升绘制性能（可选，部分机型需关闭）
-        setLayerType(LAYER_TYPE_HARDWARE, null)
+        setLayerType(LAYER_TYPE_SOFTWARE, null)
+        scaleType = ScaleType.FIT_XY
+        // 1. 关键修改：去掉自身背景（改为完全透明）
+        setBackgroundColor(Color.TRANSPARENT)
+        // 额外优化：禁用控件自身的绘制背景逻辑
+        setWillNotDraw(false)
     }
 
-    /**
-     * 设置目标图片（本地绝对路径）
-     */
+    // 目标图加载方法（无修改）
     fun setTargetImage(localPath: String) {
-        if (!File(localPath).exists()) {
-            targetBitmap = null
-            invalidate()
-            return
-        }
-        Glide.with(context)
-            .asBitmap()
-            .load(File(localPath))
-            .into(object : SimpleTarget<Bitmap>() {
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    targetBitmap = resource
-                    invalidate() // 刷新绘制
+        Log.d(TAG, "原生加载目标图：路径=$localPath，文件是否存在=${File(localPath).exists()}")
+        Thread {
+            val file = File(localPath)
+            if (!file.exists()) {
+                Log.e(TAG, "目标图文件不存在")
+                post { clearTargetBitmap() }
+                return@Thread
+            }
+
+            val options = BitmapFactory.Options().apply {
+                inJustDecodeBounds = true
+                BitmapFactory.decodeFile(localPath, this)
+                val screenWidth = context.resources.displayMetrics.widthPixels
+                inSampleSize = calculateInSampleSize(this, screenWidth, screenWidth * 2)
+                inJustDecodeBounds = false
+                inPreferredConfig = Bitmap.Config.ARGB_8888 // 确保目标图支持透明度
+            }
+
+            val bitmap = BitmapFactory.decodeFile(localPath, options)
+            post {
+                if (bitmap != null) {
+                    Log.d(TAG, "目标图加载成功：宽=${bitmap.width}，高=${bitmap.height}")
+                    targetBitmap = bitmap
+                    requestLayout()
+                    invalidate()
+                } else {
+                    Log.e(TAG, "目标图加载失败")
+                    clearTargetBitmap()
                 }
-            })
+            }
+        }.start()
     }
 
-    /**
-     * 设置目标图片（drawable资源ID）
-     */
     fun setTargetImageRes(resId: Int) {
-        Glide.with(context)
-            .asBitmap()
-            .load(resId)
-            .into(object : SimpleTarget<Bitmap>() {
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    targetBitmap = resource
+        Log.d(TAG, "原生加载目标图：resId=$resId")
+        Thread {
+            val options = BitmapFactory.Options().apply {
+                inPreferredConfig = Bitmap.Config.ARGB_8888 // 确保目标图支持透明度
+                val screenWidth = context.resources.displayMetrics.widthPixels
+                inJustDecodeBounds = true
+                BitmapFactory.decodeResource(context.resources, resId, this)
+                inSampleSize = calculateInSampleSize(this, screenWidth, screenWidth * 2)
+                inJustDecodeBounds = false
+            }
+            val bitmap = BitmapFactory.decodeResource(context.resources, resId, options)
+            post {
+                if (bitmap != null) {
+                    Log.d(TAG, "目标图加载成功：宽=${bitmap.width}，高=${bitmap.height}")
+                    targetBitmap = bitmap
+                    requestLayout()
                     invalidate()
+                } else {
+                    Log.e(TAG, "目标图加载失败")
+                    clearTargetBitmap()
                 }
-            })
+            }
+        }.start()
     }
 
-    /**
-     * 设置掩码图片（本地绝对路径）
-     */
+    // 掩码图加载方法（无修改，保持非白色透明处理）
     fun setMaskImage(localPath: String) {
-        if (!File(localPath).exists()) {
-            maskBitmap = null
-            invalidate()
-            return
-        }
-        Glide.with(context)
-            .asBitmap()
-            .load(File(localPath))
-            .into(object : SimpleTarget<Bitmap>() {
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    maskBitmap = resource
+        Log.d(TAG, "原生加载掩码图：路径=$localPath")
+        Thread {
+            val file = File(localPath)
+            if (!file.exists()) {
+                Log.e(TAG, "掩码图文件不存在")
+                post { clearMaskBitmap() }
+                return@Thread
+            }
+            var rawMask = BitmapFactory.decodeFile(localPath)
+            rawMask = processMaskBitmap(rawMask)
+            post {
+                if (rawMask != null) {
+                    Log.d(TAG, "掩码图加载并处理成功：宽=${rawMask.width}，高=${rawMask.height}")
+                    maskBitmap = rawMask
                     invalidate()
+                } else {
+                    Log.e(TAG, "掩码图加载失败")
+                    clearMaskBitmap()
                 }
-            })
+            }
+        }.start()
     }
 
-    /**
-     * 设置掩码图片（drawable资源ID）
-     */
     fun setMaskImageRes(resId: Int) {
-        Glide.with(context)
-            .asBitmap()
-            .load(resId)
-            .into(object : SimpleTarget<Bitmap>() {
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    maskBitmap = resource
+        Log.d(TAG, "原生加载掩码图：resId=$resId")
+        Thread {
+            var rawMask = BitmapFactory.decodeResource(context.resources, resId)
+            rawMask = processMaskBitmap(rawMask)
+            post {
+                if (rawMask != null) {
+                    Log.d(TAG, "掩码图加载并处理成功：宽=${rawMask.width}，高=${rawMask.height}")
+                    maskBitmap = rawMask
                     invalidate()
+                } else {
+                    Log.e(TAG, "掩码图加载失败")
+                    clearMaskBitmap()
                 }
-            })
+            }
+        }.start()
     }
 
-    /**
-     * 清除图片和掩码（释放资源）
-     */
-    fun clear() {
+    // 掩码图处理方法（无修改，非白色区域透明）
+    private fun processMaskBitmap(rawMask: Bitmap?): Bitmap? {
+        if (rawMask == null) return null
+
+        val processedMask = Bitmap.createBitmap(
+            rawMask.width, rawMask.height,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(processedMask)
+        canvas.drawBitmap(rawMask, 0f, 0f, null)
+
+        val pixels = IntArray(processedMask.width * processedMask.height)
+        processedMask.getPixels(pixels, 0, processedMask.width, 0, 0, processedMask.width, processedMask.height)
+
+        for (i in pixels.indices) {
+            val color = pixels[i]
+            val red = Color.red(color)
+            val green = Color.green(color)
+            val blue = Color.blue(color)
+
+            val isWhite = red > 245 && green > 245 && blue > 245
+            pixels[i] = if (isWhite) Color.WHITE else Color.TRANSPARENT
+        }
+
+        processedMask.setPixels(pixels, 0, processedMask.width, 0, 0, processedMask.width, processedMask.height)
+        rawMask.recycle()
+        return processedMask
+    }
+
+    // 工具方法（无修改）
+    private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+        val height = options.outHeight
+        val width = options.outWidth
+        var inSampleSize = 1
+
+        if (height > reqHeight || width > reqWidth) {
+            val halfHeight = height / 2
+            val halfWidth = width / 2
+            while ((halfHeight / inSampleSize) >= reqHeight && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2
+            }
+        }
+        return inSampleSize
+    }
+
+    private fun clearTargetBitmap() {
         targetBitmap?.recycle()
-        maskBitmap?.recycle()
         targetBitmap = null
+        invalidate()
+    }
+
+    private fun clearMaskBitmap() {
+        maskBitmap?.recycle()
         maskBitmap = null
         invalidate()
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        drawRect.set(0f, 0f, w.toFloat(), h.toFloat()) // 更新绘制区域
+    fun clear() {
+        clearTargetBitmap()
+        clearMaskBitmap()
     }
 
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        drawRect.set(0f, 0f, w.toFloat(), h.toFloat())
+        Log.d(TAG, "onSizeChanged：宽=$w，高=$h")
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val screenWidth = context.resources.displayMetrics.widthPixels
+        val paddingLeft = paddingLeft
+        val paddingRight = paddingRight
+        val finalWidth = screenWidth - paddingLeft - paddingRight
+
+        val minHeight = dp2px(400f)
+        var finalHeight = minHeight
+
+        targetBitmap?.let {
+            if (finalWidth > 0 && it.width > 0) {
+                val scale = finalWidth.toFloat() / it.width
+                finalHeight = (it.height * scale).toInt()
+                finalHeight = Math.max(finalHeight, minHeight)
+            }
+        }
+
+        setMeasuredDimension(finalWidth, finalHeight)
+        Log.d(TAG, "onMeasure：宽=$finalWidth，高=$finalHeight，targetBitmap是否为空=${targetBitmap == null}")
+    }
+
+    // 2. 关键修改：去掉占位绘制（避免灰色挡住下方控件）
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+        Log.d(TAG, "===== onDraw 执行了！===== 目标图=${targetBitmap != null}，掩码图=${maskBitmap != null}")
 
-        // 目标图或掩码图为空，直接返回（不绘制）
-        if (targetBitmap == null || maskBitmap == null) return
+        // 去掉灰色占位绘制（否则会挡住下方控件）
+        // val placeholderPaint = Paint()
+        // placeholderPaint.color = Color.parseColor("#CCCCCC")
+        // canvas.drawRect(drawRect, placeholderPaint)
 
-        // 1. 保存画布状态（避免影响其他绘制）
-        val saveCount = canvas.saveLayer(drawRect, null, Canvas.ALL_SAVE_FLAG)
+        // 3. 关键优化：混合绘制时确保图层透明
+        if (targetBitmap != null && maskBitmap != null) {
+            // 保存图层时指定透明背景
+            val saveCount = canvas.saveLayer(0f, 0f, drawRect.width(), drawRect.height(), null, Canvas.ALL_SAVE_FLAG)
+            try {
+                canvas.drawBitmap(targetBitmap!!, null, drawRect, null)
+                val maskMatrix = Matrix().apply {
+                    val scaleX = drawRect.width() / maskBitmap!!.width
+                    val scaleY = drawRect.height() / maskBitmap!!.height
+                    setScale(scaleX, scaleY)
+                }
+                canvas.drawBitmap(maskBitmap!!, maskMatrix, maskPaint)
+            } finally {
+                canvas.restoreToCount(saveCount)
+            }
+        }
+    }
 
-        // 2. 绘制目标图（先画，作为混合的"目标"）
-        canvas.drawBitmap(targetBitmap!!, null, drawRect, null)
-
-        // 3. 绘制掩码图（后画，作为混合的"源"，通过混合模式筛选显示区域）
-        canvas.drawBitmap(
-            maskBitmap!!,
-            Matrix().apply {
-                // 自动缩放掩码图至控件尺寸（与目标图匹配）
-                val scaleX = drawRect.width() / maskBitmap!!.width
-                val scaleY = drawRect.height() / maskBitmap!!.height
-                setScale(scaleX, scaleY)
-            },
-            maskPaint
-        )
-
-        // 4. 恢复画布状态
-        canvas.restoreToCount(saveCount)
+    private fun dp2px(dpValue: Float): Int {
+        val density = context.resources.displayMetrics.density
+        return (dpValue * density + 0.5f).toInt()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        clear() // 页面销毁时释放资源，避免内存泄漏
-    }
-    // 关键修复：重写 onMeasure，适配 wrap_content
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-
-        // 1. 获取父容器给的宽度模式和尺寸（match_parent 时 width 为屏幕宽度）
-        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
-        val widthSize = MeasureSpec.getSize(widthMeasureSpec)
-
-        // 2. 若目标图片已加载，且高度为 wrap_content，根据图片尺寸计算高度
-        if (targetBitmap != null && MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST) {
-            val imageWidth = targetBitmap!!.width
-            val imageHeight = targetBitmap!!.height
-
-            if (imageWidth > 0 && widthSize > 0) {
-                // 3. 按宽度比例缩放高度（保持图片宽高比，避免变形）
-                val scale = widthSize.toFloat() / imageWidth
-                val measuredHeight = (imageHeight * scale).toInt()
-
-                // 4. 设置最终测量尺寸（宽度=父容器给的尺寸，高度=按比例计算的尺寸）
-                setMeasuredDimension(widthSize, measuredHeight)
-            }
-        }
+        clear()
     }
 }

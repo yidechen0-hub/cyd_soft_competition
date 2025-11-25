@@ -54,6 +54,10 @@
             android:exported="true"/>
         <activity android:name=".activity.MaskDemoActivity"
             android:exported="true"/>
+        <activity android:name=".competitionActivity.EntryActivity"
+            android:exported="true"/>
+        <activity android:name=".competitionActivity.CopywritingActivity"
+            android:exported="true"/>
 
 
     </application>

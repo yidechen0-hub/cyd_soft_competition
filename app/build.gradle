@@ -32,6 +32,11 @@ android {
             }
 
         }
+        javaCompileOptions {
+            annotationProcessorOptions {
+
+            }
+        }
 
     }
 
