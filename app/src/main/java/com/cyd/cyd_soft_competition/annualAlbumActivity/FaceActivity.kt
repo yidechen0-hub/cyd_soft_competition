@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.cyd.cyd_soft_competition.R
 import com.cyd.cyd_soft_competition.databinding.ActivityFaceBinding
 import com.cyd.cyd_soft_competition.dbmsg.Messages
+import com.cyd.cyd_soft_competition.tagActivity.TransitionActivity
 
 class FaceActivity : AppCompatActivity() {
     private var currentImageIndex = 0
@@ -34,6 +35,12 @@ class FaceActivity : AppCompatActivity() {
         val facePath3 = Messages().getFacePath()[2]
         binding.maskImageView3.setTargetImage(facePath3)
         binding.maskImageView3.setMaskImageRes(R.drawable.bg_bong)
+
+        binding.clRoot.setOnClickListener {
+            val intent = Intent(this, TransitionActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
 
 

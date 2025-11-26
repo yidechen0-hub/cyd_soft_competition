@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000">
+
+    <!-- 视频播放器 -->
+    <VideoView
+        android:id="@+id/vv_player"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true" />
+
+
+    <TextView
+        android:id="@+id/tv_location2"
+        android:layout_width="128dp"
+        android:layout_height="85dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="530dp"
+        android:layout_marginEnd="50dp"
+        android:background="?attr/selectableItemBackground"
+        android:scaleType="centerInside"
+        android:text="猫咪"
+        android:textColor="#FFFFFF"
+        android:textSize="50sp"
+        android:visibility="invisible"
+        android:gravity="center"
+        android:singleLine="false"
+        android:maxLines="2" />
+
+    <TextView
+        android:id="@+id/tv_location3"
+        android:layout_width="128dp"
+        android:layout_height="85dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="530dp"
+        android:layout_marginStart="50dp"
+        android:background="?attr/selectableItemBackground"
+        android:scaleType="centerInside"
+        android:text="美食"
+        android:textColor="#FFFFFF"
+        android:textSize="50sp"
+        android:visibility="invisible"
+        android:gravity="center"
+        android:singleLine="false"
+        android:maxLines="2" />
+
+
+    <TextView
+        android:id="@+id/tv_location4"
+        android:layout_width="60dp"
+        android:layout_height="21dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="84dp"
+        android:layout_marginBottom="500dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:maxLines="2"
+        android:scaleType="centerInside"
+        android:singleLine="false"
+        android:text="820张"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/tv_location5"
+        android:layout_width="60dp"
+        android:layout_height="21dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="84dp"
+        android:layout_marginBottom="500dp"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:maxLines="2"
+        android:scaleType="centerInside"
+        android:singleLine="false"
+        android:text="1000张"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:visibility="invisible" />
+
+</RelativeLayout>

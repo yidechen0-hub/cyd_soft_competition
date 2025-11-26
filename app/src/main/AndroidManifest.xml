@@ -66,6 +66,15 @@
             android:exported="true"/>
         <activity android:name=".annualAlbumActivity.FaceActivity"
             android:exported="true"/>
+        <activity android:name=".tagActivity.TransitionActivity"
+            android:exported="true"/>
+        <activity android:name=".tagActivity.SmileTransitionActivity"
+            android:exported="true"/>
+        <activity android:name=".tagActivity.SmileVedioActivity"
+            android:exported="true"/>
+        <activity android:name=".seasonActivity.SeasonTransitionActivity"
+            android:exported="true"/>
+
 
 
 

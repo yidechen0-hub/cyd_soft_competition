@@ -29,5 +29,22 @@ class Messages {
                     "/sdcard/taiyi/competition/start/face1.JPG",
                     "/sdcard/taiyi/competition/start/face1.JPG")
     }
+    // 从数据库中获取人物标签，标签数量最多的前两个
+    fun getTags(): List<String> {
+        return listOf("猫咪","美食")
+    }
+    // 从数据库中获取人物标签数量最多的前两个
+    fun getTagNums(): List<String> {
+        return listOf("1000张","820张")
+    }
+    // 从数据库中获取笑脸数量
+    fun getSmileCounts(): String {
+        return "你的笑容出现了1000次"
+    }
+    fun getSmileVedioPath(): String{
+        return "/sdcard/taiyi/competition/start/copywriting1.mp4"
+    }
+
+
 
 }
