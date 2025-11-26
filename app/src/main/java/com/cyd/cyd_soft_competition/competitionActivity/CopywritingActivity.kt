@@ -1,13 +1,14 @@
 package com.cyd.cyd_soft_competition.competitionActivity
 
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 import com.cyd.cyd_soft_competition.R
+import com.cyd.cyd_soft_competition.annualAlbumActivity.FirstImgActivity
 import com.cyd.cyd_soft_competition.databinding.ActivityCopywritingBinding
 
 
@@ -94,12 +95,15 @@ class CopywritingActivity : AppCompatActivity() {
      * 监听视频播放完成事件
      */
     private fun setPlayerListener() {
-        vvPlayer?.setOnPreparedListener { mediaPlayer ->
-            mediaPlayer.isLooping = true // 所有视频都循环
-        }
+//        vvPlayer?.setOnPreparedListener { mediaPlayer ->
+//            mediaPlayer.isLooping = true // 所有视频都循环
+//        }
         vvPlayer?.setOnCompletionListener {
-            ivNext?.visibility = View.VISIBLE  // 显示图标
-//            Toast.makeText(this, "当前视频播放完成", Toast.LENGTH_SHORT).show()
+            if (currentIndex == videoList!!.size - 1){
+                startActivity(Intent(this, FirstImgActivity::class.java))
+                finish()
+            }
+            playNextVideo()
         }
         vvPlayer?.setOnClickListener {
             playNextVideo()
@@ -111,6 +115,7 @@ class CopywritingActivity : AppCompatActivity() {
      */
     private fun setNextClickListener() {
         ivNext?.setOnClickListener {
+            startActivity(Intent(this, FirstImgActivity::class.java))
             finish()
         }
     }
@@ -125,6 +130,7 @@ class CopywritingActivity : AppCompatActivity() {
             initPlayer()
         } else {
             // 所有视频播放完毕，关闭页面（或提示用户）
+            startActivity(Intent(this, FirstImgActivity::class.java))
             finish()
         }
     }

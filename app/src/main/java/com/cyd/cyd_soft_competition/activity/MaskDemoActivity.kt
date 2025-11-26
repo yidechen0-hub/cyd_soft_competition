@@ -25,9 +25,13 @@ class MaskDemoActivity : AppCompatActivity() {
 //        maskImageView.setMaskImageRes(R.drawable.test_mask)     // 掩码图（放入 drawable）
 
         // 若加载本地图片，确保路径正确（示例）
-         val targetPath = "/sdcard/taiyi/test/AlbumSearchPipelineAbility/2.jpg"
-         val maskPath = "/sdcard/taiyi/test/AlbumSearchPipelineAbility/spring.png"
-         maskImageView.setTargetImage(targetPath)
-         maskImageView.setMaskImage(maskPath)
+//         val targetPath = "/sdcard/taiyi/test/AlbumSearchPipelineAbility/2.jpg"
+//         val maskPath = "/sdcard/taiyi/test/AlbumSearchPipelineAbility/spring.png"
+//         maskImageView.setTargetImage(targetPath)
+//         maskImageView.setMaskImage(maskPath)
+
+        val targetPath = "/sdcard/taiyi/competition/start/face1.JPG"
+        maskImageView.setTargetImage(targetPath)
+        maskImageView.setMaskImageRes(R.drawable.bg_star)
     }
 }

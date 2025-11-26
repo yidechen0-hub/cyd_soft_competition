@@ -153,7 +153,7 @@ class MaskImageView @JvmOverloads constructor(
             val green = Color.green(color)
             val blue = Color.blue(color)
 
-            val isWhite = red > 245 && green > 245 && blue > 245
+            val isWhite = red > 100 && green > 100 && blue > 100
             pixels[i] = if (isWhite) Color.WHITE else Color.TRANSPARENT
         }
 

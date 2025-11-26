@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="0dp">
+
+    <!-- 背景图：铺满约束布局，作为定位基准 -->
+
+    <!-- 前景图：固定大小 + 约束到背景图 + 图片自适应 -->
+    <ImageView
+        android:id="@+id/iv_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="1.0"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background_first"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_foreground"
+        android:layout_width="310dp"
+        android:layout_height="542dp"
+        android:adjustViewBounds="true"
+        android:alpha="1.0"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@id/iv_bg"
+        app:layout_constraintLeft_toLeftOf="@id/iv_bg"
+        app:layout_constraintRight_toRightOf="@id/iv_bg"
+        app:layout_constraintTop_toTopOf="@+id/iv_bg"
+        app:layout_constraintVertical_bias="0.681" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="116dp"
+        android:text="2025年1月1日早上6点"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/iv_bg"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/iv_bg"
+        app:layout_constraintTop_toTopOf="@+id/iv_bg" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

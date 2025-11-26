@@ -58,6 +58,15 @@
             android:exported="true"/>
         <activity android:name=".competitionActivity.CopywritingActivity"
             android:exported="true"/>
+        <activity android:name=".annualAlbumActivity.FirstImgActivity"
+            android:exported="true"/>
+        <activity android:name=".annualAlbumActivity.WholeYearActivity"
+            android:exported="true"/>
+        <activity android:name=".annualAlbumActivity.LoicationActivity"
+            android:exported="true"/>
+        <activity android:name=".annualAlbumActivity.FaceActivity"
+            android:exported="true"/>
+
 
 
     </application>
