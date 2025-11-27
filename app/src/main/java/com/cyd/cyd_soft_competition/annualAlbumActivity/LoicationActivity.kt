@@ -19,7 +19,7 @@ class LoicationActivity : AppCompatActivity() {
         binding = ActivityLocationBinding.inflate(layoutInflater)
         setContentView(binding.root)
         playForegroundVideoFromRaw()
-        binding.tvLocation.text = Messages().getLocationMsg()
+        binding.tvLocation.text = Messages(this).getLocationMsg()
         binding.vvPlayer.setOnClickListener {
             clicked()
         }

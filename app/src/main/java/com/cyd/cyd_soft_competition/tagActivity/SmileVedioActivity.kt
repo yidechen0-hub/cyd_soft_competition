@@ -18,7 +18,7 @@ class SmileVedioActivity : AppCompatActivity() {
         binding = ActivitySmileVedioBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val vedioPath = Messages().getSmileVedioPath()
+        val vedioPath = Messages(this).getSmileVedioPath()
         initPlayer(vedioPath)
 
 

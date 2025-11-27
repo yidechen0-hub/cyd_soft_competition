@@ -15,7 +15,7 @@ class SmileTransitionActivity : AppCompatActivity() {
         binding = ActivitySmileTransitionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.tvTime.text = Messages().getSmileCounts()
+        binding.tvTime.text = Messages(this).getSmileCounts()
 
 
 

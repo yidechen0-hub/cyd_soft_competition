@@ -18,7 +18,7 @@ class FirstImgActivity : AppCompatActivity() {
         binding = ActivityFirstImgBinding.inflate(layoutInflater)
         setContentView(binding.root)
         // 本地图片路径
-        val imagePath = Messages().getFirstImgPath()
+        val imagePath = Messages(this).getFirstImgPath()
         // 本地图片文件
         val imageFile = File(imagePath)
 
@@ -41,7 +41,7 @@ class FirstImgActivity : AppCompatActivity() {
         }
 
         // 拍摄时间
-        val time = Messages().getFirstImgMsg()
+        val time = Messages(this).getFirstImgMsg()
         binding.tvTime.text = time
 
         binding.clRoot.setOnClickListener {

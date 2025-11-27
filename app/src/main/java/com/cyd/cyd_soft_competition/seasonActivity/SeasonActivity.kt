@@ -9,6 +9,7 @@ import com.cyd.cyd_soft_competition.activity.AnimVideoActivity
 import com.cyd.cyd_soft_competition.databinding.ActivitySeasonBinding
 import com.cyd.cyd_soft_competition.R
 import com.cyd.cyd_soft_competition.dbmsg.Messages
+import com.cyd.cyd_soft_competition.specialDay.SpecialDayTransitionActivity
 
 
 class SeasonActivity : AppCompatActivity() {
@@ -18,8 +19,34 @@ class SeasonActivity : AppCompatActivity() {
         binding = ActivitySeasonBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val path = Messages().getSeasonPath()
+        val path = Messages(this).getSeasonPath()
         loadSpring(path)
+
+        binding.ivFullBackground.setOnClickListener {
+            val intent = Intent(this, SpecialDayTransitionActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        binding.ivSpring.setOnClickListener {
+            val intent = Intent(this, SpecialDayTransitionActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+//        binding.ivSummer.setOnClickListener {
+//            val intent = Intent(this, SpecialDayTransitionActivity::class.java)
+//            startActivity(intent)
+//            finish()
+//        }
+//        binding.ivAutumn.setOnClickListener {
+//            val intent = Intent(this, SpecialDayTransitionActivity::class.java)
+//            startActivity(intent)
+//            finish()
+//        }
+//        binding.ivWinter.setOnClickListener {
+//            val intent = Intent(this, SpecialDayTransitionActivity::class.java)
+//            startActivity(intent)
+//            finish()
+//        }
 
 
 

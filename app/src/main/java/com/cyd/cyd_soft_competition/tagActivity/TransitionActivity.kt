@@ -34,8 +34,8 @@ class TransitionActivity : AppCompatActivity() {
             0 ->{
                 current = 1
                 playForegroundVideoFromRaw()
-                val tag = Messages().getTags()
-                val tagNums = Messages().getTagNums()
+                val tag = Messages(this).getTags()
+                val tagNums = Messages(this).getTagNums()
                 binding.tvLocation2.text = tag[0]
                 binding.tvLocation3.text = tag[1]
                 binding.tvLocation4.text = tagNums[0]

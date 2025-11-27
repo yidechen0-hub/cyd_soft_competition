@@ -22,17 +22,17 @@ class FaceActivity : AppCompatActivity() {
 
 
         //
-        val facePath = Messages().getFacePath()[0]
+        val facePath = Messages(this).getFacePath()[0]
         binding.maskImageView.setTargetImage(facePath)
         binding.maskImageView.setMaskImageRes(R.drawable.bg_star)
 
 
-        val facePath2 = Messages().getFacePath()[1]
+        val facePath2 = Messages(this).getFacePath()[1]
         binding.maskImageView2.setTargetImage(facePath2)
         binding.maskImageView2.setMaskImageRes(R.drawable.bg_flower)
 
 
-        val facePath3 = Messages().getFacePath()[2]
+        val facePath3 = Messages(this).getFacePath()[2]
         binding.maskImageView3.setTargetImage(facePath3)
         binding.maskImageView3.setMaskImageRes(R.drawable.bg_bong)
 

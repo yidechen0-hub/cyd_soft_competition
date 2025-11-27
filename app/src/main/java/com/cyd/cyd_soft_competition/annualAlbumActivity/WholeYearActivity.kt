@@ -17,8 +17,8 @@ class WholeYearActivity : AppCompatActivity() {
 
 
         // 拍摄时间
-        val time = Messages().getFirstImgMsg()
-        binding.tvTime.text = Messages().getImgAndVideoNum()
+        val time = Messages(this).getFirstImgMsg()
+        binding.tvTime.text = Messages(this).getImgAndVideoNum()
 
         binding.clRoot.setOnClickListener {
             when(currentImageIndex){
@@ -37,7 +37,7 @@ class WholeYearActivity : AppCompatActivity() {
 
     fun showSec(){
         binding.ivBg.setImageResource(R.drawable.bg_whole_year2)
-        binding.tvTime.text = Messages().getAvgShootNum()
+        binding.tvTime.text = Messages(this).getAvgShootNum()
     }
 
     override fun onDestroy() {

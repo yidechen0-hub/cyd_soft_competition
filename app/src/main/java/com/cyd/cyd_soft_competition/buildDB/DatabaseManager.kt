@@ -272,6 +272,152 @@ class DatabaseManager(context: Context) {
         return false
     }
 
+    /**
+     * Get the path of the most special photo (taken between 0-4 AM, latest time is most special)
+     */
+    fun getSpecialDaySinglePath(): String? {
+        val db = dbHelper.readableDatabase
+        val currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
+        
+        val cursor = db.query(
+            "image_metadata",
+            arrayOf("path"),
+            "year = ? AND hour >= 0 AND hour < 4",
+            arrayOf(currentYear.toString()),
+            null,
+            null,
+            "hour DESC, minute DESC, second DESC",
+            "1"
+        )
+        
+        var path: String? = null
+        if (cursor.moveToFirst()) {
+            path = cursor.getString(0)
+        }
+        cursor.close()
+        return path
+    }
+
+    /**
+     * Get the date of the most special photo (for display purposes)
+     * Returns formatted date string like "8月5日"
+     */
+    fun getSpecialDayDate(): String? {
+        val db = dbHelper.readableDatabase
+        val currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
+        
+        val cursor = db.query(
+            "image_metadata",
+            arrayOf("month", "day"),
+            "year = ? AND hour >= 0 AND hour < 4",
+            arrayOf(currentYear.toString()),
+            null,
+            null,
+            "hour DESC, minute DESC, second DESC",
+            "1"
+        )
+        
+        var dateStr: String? = null
+        if (cursor.moveToFirst()) {
+            val month = cursor.getInt(0)
+            val day = cursor.getInt(1)
+            dateStr = "${month}月${day}日"
+        }
+        cursor.close()
+        return dateStr
+    }
+
+    /**
+     * Get special day grid data: all photos from the day with most photos taken
+     * Returns List of photo paths from the day with most photos
+     */
+    fun getSpecialDayGridData(): List<String> {
+        val db = dbHelper.readableDatabase
+        val currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
+        
+        // Find the day with most photos
+        val dayCursor = db.rawQuery(
+            """
+            SELECT year, month, day, COUNT(*) as photo_count 
+            FROM image_metadata 
+            WHERE year = ? 
+            GROUP BY year, month, day 
+            ORDER BY photo_count DESC 
+            LIMIT 1
+            """.trimIndent(),
+            arrayOf(currentYear.toString())
+        )
+        
+        var year: Int? = null
+        var month: Int? = null
+        var day: Int? = null
+        
+        if (dayCursor.moveToFirst()) {
+            year = dayCursor.getInt(0)
+            month = dayCursor.getInt(1)
+            day = dayCursor.getInt(2)
+        }
+        dayCursor.close()
+        
+        if (year == null || month == null || day == null) {
+            return emptyList()
+        }
+        
+        // Get all photos from that day
+        val photosCursor = db.query(
+            "image_metadata",
+            arrayOf("path"),
+            "year = ? AND month = ? AND day = ?",
+            arrayOf(year.toString(), month.toString(), day.toString()),
+            null,
+            null,
+            "hour ASC, minute ASC, second ASC",
+            null
+        )
+        
+        val photosList = mutableListOf<String>()
+        while (photosCursor.moveToNext()) {
+            photosList.add(photosCursor.getString(0))
+        }
+        photosCursor.close()
+        
+        return photosList
+    }
+
+    /**
+     * Get info about the day with most photos (date and count)
+     * Returns Pair<dateString, photoCount> like Pair("8月5日", 578)
+     */
+    fun getMostPhotoDayInfo(): Pair<String, Int> {
+        val db = dbHelper.readableDatabase
+        val currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
+        
+        val cursor = db.rawQuery(
+            """
+            SELECT month, day, COUNT(*) as photo_count 
+            FROM image_metadata 
+            WHERE year = ? 
+            GROUP BY year, month, day 
+            ORDER BY photo_count DESC 
+            LIMIT 1
+            """.trimIndent(),
+            arrayOf(currentYear.toString())
+        )
+        
+        var dateStr = ""
+        var count = 0
+        
+        if (cursor.moveToFirst()) {
+            val month = cursor.getInt(0)
+            val day = cursor.getInt(1)
+            count = cursor.getInt(2)
+            dateStr = "${month}月${day}日"
+        }
+        cursor.close()
+        
+        return Pair(dateStr, count)
+    }
+
     private fun cursorToMetadata(cursor: android.database.Cursor): ImageMetadataInfo {
         return ImageMetadataInfo(
             path = cursor.getString(cursor.getColumnIndexOrThrow("path")),

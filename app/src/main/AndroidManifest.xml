@@ -78,6 +78,12 @@
             android:exported="true"/>
         <activity android:name=".activity.BuildDBActivity"
             android:exported="true"/>
+        <activity android:name=".specialDay.SpecialDayTransitionActivity"
+            android:exported="true"/>
+        <activity android:name=".specialDay.SpecialDayGridActivity"
+            android:exported="true"/>
+        <activity android:name=".specialDay.SpecialDayDetailActivity"
+            android:exported="true"/>
 
 
 
