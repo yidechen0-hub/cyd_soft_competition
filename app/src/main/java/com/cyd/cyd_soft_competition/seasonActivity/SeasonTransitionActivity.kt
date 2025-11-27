@@ -21,7 +21,11 @@ class SeasonTransitionActivity : AppCompatActivity() {
         playForegroundVideoFromRaw()
 
         binding.vvPlayer.setOnClickListener {
-            // TODO:跳转
+            startActivity(Intent(this, SeasonActivity::class.java))
+            finish()
+        }
+        binding.vvPlayer.setOnCompletionListener {
+            startActivity(Intent(this, SeasonActivity::class.java))
             finish()
         }
 

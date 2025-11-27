@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
             AiTestItem(resources.getString(R.string.mutil_img), MutilImgActivity::class.java),
             AiTestItem(resources.getString(R.string.mask_img), MaskDemoActivity::class.java),
             AiTestItem(resources.getString(R.string.entry), EntryActivity::class.java),
+            AiTestItem(resources.getString(R.string.competition_buildDB), BuildDBActivity::class.java),
         )
         binding.rvMain.layoutManager = GridLayoutManager(this, 2)
         binding.rvMain.adapter = mainAdapter(this, mainTests)

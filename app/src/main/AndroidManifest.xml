@@ -74,6 +74,10 @@
             android:exported="true"/>
         <activity android:name=".seasonActivity.SeasonTransitionActivity"
             android:exported="true"/>
+        <activity android:name=".seasonActivity.SeasonActivity"
+            android:exported="true"/>
+        <activity android:name=".activity.BuildDBActivity"
+            android:exported="true"/>
 
 
 

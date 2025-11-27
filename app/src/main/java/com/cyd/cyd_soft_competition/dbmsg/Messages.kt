@@ -45,6 +45,14 @@ class Messages {
         return "/sdcard/taiyi/competition/start/copywriting1.mp4"
     }
 
+    // 默认有春夏秋冬
+    fun getSeasonPath(): List<String>{
+        return listOf("/sdcard/taiyi/competition/start/face1.JPG",
+                        "/sdcard/taiyi/competition/start/face1.JPG",
+                        "/sdcard/taiyi/competition/start/face1.JPG",
+                        "/sdcard/taiyi/competition/start/face1.JPG")
+    }
+
 
 
 }
