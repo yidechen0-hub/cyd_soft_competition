@@ -126,4 +126,14 @@ class Messages(context: Context) {
     fun getMostPhotoDayInfo(): Pair<String, Int> {
         return dbManager.getMostPhotoDayInfo()
     }
+
+    // 从数据库中获取aesthetic_score最高的20张图片路径
+    fun getTop20Paths(): List<String> {
+//        return dbManager.getTop20Paths()
+        val res = mutableListOf<String>()
+        for(i in 0..50){
+            res.add("/sdcard/taiyi/competition/start/face1.JPG")
+        }
+        return res
+    }
 }

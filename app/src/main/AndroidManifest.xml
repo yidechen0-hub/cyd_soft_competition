@@ -84,6 +84,10 @@
             android:exported="true"/>
         <activity android:name=".specialDay.SpecialDayDetailActivity"
             android:exported="true"/>
+        <activity android:name=".top20Activity.TopTransitionActivity"
+            android:exported="true"/>
+        <activity android:name=".top20Activity.TopActivity"
+            android:exported="true"/>
 
 
 

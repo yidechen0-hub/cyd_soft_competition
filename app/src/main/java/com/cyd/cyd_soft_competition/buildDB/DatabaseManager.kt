@@ -418,6 +418,34 @@ class DatabaseManager(context: Context) {
         return Pair(dateStr, count)
     }
 
+    /**
+     * Get paths of top 20 photos with highest aesthetic scores
+     * Returns List of photo paths sorted by aesthetic_score DESC
+     */
+    fun getTop20Paths(): List<String> {
+        val db = dbHelper.readableDatabase
+        val currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
+        
+        val cursor = db.query(
+            "image_metadata",
+            arrayOf("path"),
+            "year = ? AND aesthetic_score IS NOT NULL",
+            arrayOf(currentYear.toString()),
+            null,
+            null,
+            "aesthetic_score DESC",
+            "20"
+        )
+        
+        val photosList = mutableListOf<String>()
+        while (cursor.moveToNext()) {
+            photosList.add(cursor.getString(0))
+        }
+        cursor.close()
+        
+        return photosList
+    }
+
     private fun cursorToMetadata(cursor: android.database.Cursor): ImageMetadataInfo {
         return ImageMetadataInfo(
             path = cursor.getString(cursor.getColumnIndexOrThrow("path")),

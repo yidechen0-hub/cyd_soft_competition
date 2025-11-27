@@ -1,6 +1,6 @@
 package com.cyd.cyd_soft_competition.specialDay
 
-import android.net.Uri
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.cyd.cyd_soft_competition.databinding.ActivitySpecialDayGridBinding
 import com.cyd.cyd_soft_competition.databinding.ItemSpecialDayGridBinding
 import com.cyd.cyd_soft_competition.dbmsg.Messages
+import com.cyd.cyd_soft_competition.top20Activity.TopTransitionActivity
 import java.io.File
 
 class SpecialDayGridActivity : AppCompatActivity() {
@@ -32,6 +33,11 @@ class SpecialDayGridActivity : AppCompatActivity() {
 
         binding.rvGrid.layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
         binding.rvGrid.adapter = SpecialDayGridAdapter(gridPaths)
+
+        binding.ivBg.setOnClickListener {
+            startActivity(Intent(this, TopTransitionActivity::class.java))
+            finish()
+        }
     }
 
     inner class SpecialDayGridAdapter(private val paths: List<String>) :
