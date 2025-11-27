@@ -60,4 +60,231 @@ class DatabaseManager(context: Context) {
     fun close() {
         dbHelper.close()
     }
+
+    // --- Query Methods for Messages ---
+
+    fun getFirstImageMetadata(): ImageMetadataInfo? {
+        val db = dbHelper.readableDatabase
+        var info: ImageMetadataInfo? = null
+        val currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
+        val cursor = db.query(
+            "image_metadata",
+            null,
+            "year = ?", // Filter by current year
+            arrayOf(currentYear.toString()),
+            null,
+            null,
+            "year ASC, month ASC, day ASC, hour ASC, minute ASC, second ASC",
+            "1"
+        )
+        if (cursor.moveToFirst()) {
+            info = cursorToMetadata(cursor)
+        }
+        cursor.close()
+        return info
+    }
+
+    fun getImageCount(): Int {
+        val db = dbHelper.readableDatabase
+        return android.database.DatabaseUtils.queryNumEntries(db, "image_metadata").toInt()
+    }
+
+    fun getVideoCount(): Int {
+        // Placeholder: Currently ImageScanner only scans images.
+        return 0
+    }
+
+    fun getDistinctDayCount(): Int {
+        val db = dbHelper.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT COUNT(DISTINCT year || '-' || month || '-' || day) FROM image_metadata WHERE year IS NOT NULL",
+            null
+        )
+        var count = 0
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0)
+        }
+        cursor.close()
+        return count
+    }
+
+    fun getLocationCounts(): Pair<Int, Int> {
+        val db = dbHelper.readableDatabase
+        // Count distinct countries
+        val cursorCountry = db.rawQuery("SELECT COUNT(DISTINCT country) FROM image_metadata WHERE country IS NOT NULL", null)
+        var countryCount = 0
+        if (cursorCountry.moveToFirst()) {
+            countryCount = cursorCountry.getInt(0)
+        }
+        cursorCountry.close()
+
+        // Count distinct provinces/cities
+        val cursorProvince = db.rawQuery("SELECT COUNT(DISTINCT province) FROM image_metadata WHERE province IS NOT NULL", null)
+        var provinceCount = 0
+        if (cursorProvince.moveToFirst()) {
+            provinceCount = cursorProvince.getInt(0)
+        }
+        cursorProvince.close()
+
+        return Pair(countryCount, provinceCount)
+    }
+
+    fun getTopTags(limit: Int): List<Pair<String, Int>> {
+        val db = dbHelper.readableDatabase
+        val cursor = db.rawQuery(
+            "SELECT tag, COUNT(*) as c FROM image_metadata WHERE tag IS NOT NULL GROUP BY tag ORDER BY c DESC LIMIT ?",
+            arrayOf(limit.toString())
+        )
+        val list = mutableListOf<Pair<String, Int>>()
+        while (cursor.moveToNext()) {
+            val tag = cursor.getString(0)
+            val count = cursor.getInt(1)
+            list.add(Pair(tag, count))
+        }
+        cursor.close()
+        return list
+    }
+
+    fun getSmileCount(): Int {
+        val db = dbHelper.readableDatabase
+        return android.database.DatabaseUtils.queryNumEntries(db, "url_count").toInt()
+    }
+
+    fun getSmileVideoPath(): String? {
+        return null
+    }
+
+    fun getSeasonPaths(): List<String> {
+        val db = dbHelper.readableDatabase
+        val list = mutableListOf<String>()
+
+        // Helper function to get best scenery photo for a month range
+        fun getBestPathForSeason(condition: String): String? {
+            val cursor = db.query(
+                "image_metadata",
+                arrayOf("path"),
+                "($condition) AND tag LIKE '%风景%'",
+                null,
+                null,
+                null,
+                "aesthetic_score DESC",
+                "1"
+            )
+            var path: String? = null
+            if (cursor.moveToFirst()) {
+                path = cursor.getString(0)
+            }
+            cursor.close()
+            return path
+        }
+
+        // Spring: 3-5
+        list.add(getBestPathForSeason("month >= 3 AND month <= 5") ?: "")
+        // Summer: 6-8
+        list.add(getBestPathForSeason("month >= 6 AND month <= 8") ?: "")
+        // Autumn: 9-11
+        list.add(getBestPathForSeason("month >= 9 AND month <= 11") ?: "")
+        // Winter: 12, 1, 2
+        list.add(getBestPathForSeason("month = 12 OR month <= 2") ?: "")
+
+        return list
+    }
+
+    fun getFaceUrl(): List<String> {
+        val db = dbHelper.readableDatabase
+        val list = mutableListOf<String>()
+        val cursor = db.query(
+            "url_count",
+            arrayOf("url"),
+            null,
+            null,
+            null,
+            null,
+            "count DESC",
+            "3"
+        )
+        while (cursor.moveToNext()) {
+            list.add(cursor.getString(0))
+        }
+        cursor.close()
+        return list
+    }
+
+    fun getFacePaths(): List<String> {
+        val urls = getFaceUrl()
+        val localPaths = mutableListOf<String>()
+        val dirPath = "/sdcard/taiyi/competition/face/"
+        val dir = java.io.File(dirPath)
+        if (!dir.exists()) {
+            dir.mkdirs()
+        }
+
+        for ((index, url) in urls.withIndex()) {
+            // Generate a filename. You might want to extract extension or use a hash.
+            // For simplicity, using face_{index}.jpg (assuming jpg or handling generic)
+            // Or try to keep original name if possible.
+            val fileName = "face_${index + 1}.jpg" 
+            val file = java.io.File(dir, fileName)
+            
+            // Download if not exists or overwrite? User said "save to", implies action.
+            // But for performance, maybe check existence? 
+            // Let's try to download.
+            if (downloadFile(url, file)) {
+                localPaths.add(file.absolutePath)
+            } else {
+                // If download fails, maybe add a placeholder or skip?
+                // For now, let's just log it and maybe add the path anyway if it exists?
+                if (file.exists()) {
+                    localPaths.add(file.absolutePath)
+                }
+            }
+        }
+        
+        // Ensure we have enough paths to avoid crashes in UI if possible, 
+        // but strictly following logic, we return what we have.
+        return localPaths
+    }
+
+    private fun downloadFile(urlStr: String, destFile: java.io.File): Boolean {
+        try {
+            val url = java.net.URL(urlStr)
+            val connection = url.openConnection() as java.net.HttpURLConnection
+            connection.connectTimeout = 5000
+            connection.readTimeout = 5000
+            connection.requestMethod = "GET"
+            connection.connect()
+
+            if (connection.responseCode == java.net.HttpURLConnection.HTTP_OK) {
+                val inputStream = connection.inputStream
+                val outputStream = java.io.FileOutputStream(destFile)
+                val buffer = ByteArray(1024)
+                var len: Int
+                while (inputStream.read(buffer).also { len = it } != -1) {
+                    outputStream.write(buffer, 0, len)
+                }
+                outputStream.close()
+                inputStream.close()
+                return true
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error downloading file: $urlStr", e)
+        }
+        return false
+    }
+
+    private fun cursorToMetadata(cursor: android.database.Cursor): ImageMetadataInfo {
+        return ImageMetadataInfo(
+            path = cursor.getString(cursor.getColumnIndexOrThrow("path")),
+            year = cursor.getInt(cursor.getColumnIndexOrThrow("year")),
+            month = cursor.getInt(cursor.getColumnIndexOrThrow("month")),
+            day = cursor.getInt(cursor.getColumnIndexOrThrow("day")),
+            hour = cursor.getInt(cursor.getColumnIndexOrThrow("hour")),
+            minute = cursor.getInt(cursor.getColumnIndexOrThrow("minute")),
+            second = cursor.getInt(cursor.getColumnIndexOrThrow("second")),
+            latitude = cursor.getDouble(cursor.getColumnIndexOrThrow("latitude")),
+            longitude = cursor.getDouble(cursor.getColumnIndexOrThrow("longitude")),
+            country = cursor.getString(cursor.getColumnIndexOrThrow("country")),
+            province = cursor.getString(cursor.getColumnIndexOrThrow("province"))
+        )
+    }
 }
