@@ -88,6 +88,10 @@
             android:exported="true"/>
         <activity android:name=".top20Activity.TopActivity"
             android:exported="true"/>
+        <activity android:name=".endingActivity.EndingVedioActivity"
+            android:exported="true"/>
+        <activity android:name=".endingActivity.EndingImgActivity"
+            android:exported="true"/>
 
 
 

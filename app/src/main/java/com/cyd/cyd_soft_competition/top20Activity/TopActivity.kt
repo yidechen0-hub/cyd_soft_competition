@@ -1,5 +1,6 @@
 package com.cyd.cyd_soft_competition.top20Activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.cyd.cyd_soft_competition.databinding.ActivityTopBinding
 import com.cyd.cyd_soft_competition.databinding.ItemSpecialDayGridBinding
 import com.cyd.cyd_soft_competition.dbmsg.Messages
+import com.cyd.cyd_soft_competition.endingActivity.EndingVedioActivity
 import java.io.File
 
 class TopActivity : AppCompatActivity() {
@@ -28,7 +30,7 @@ class TopActivity : AppCompatActivity() {
 
 
         binding.ivBg.setOnClickListener {
-            //TODO:跳转
+            startActivity(Intent(this, EndingVedioActivity::class.java))
             finish()
         }
     }
