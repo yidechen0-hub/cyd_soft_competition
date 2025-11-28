@@ -15,7 +15,7 @@ import com.cyd.cyd_soft_competition.databinding.ActivityCopywritingBinding
 class CopywritingActivity : AppCompatActivity() {
     private var vvPlayer: VideoView? = null
     private var ivNext: ImageView? = null
-    private val videoList: MutableList<String> = mutableListOf() // 所有视频的地址集合（本地路径/网络URL）
+    private val videoList: MutableList<Int> = mutableListOf() // 所有视频的地址集合（本地路径/网络URL）
     private var currentIndex = 0 // 当前播放的视频索引
     private lateinit var binding: ActivityCopywritingBinding
 
@@ -26,9 +26,9 @@ class CopywritingActivity : AppCompatActivity() {
 
 
         // 示例：构建视频列表（本地路径/网络URL）
-        videoList.add("/sdcard/taiyi/competition/start/copywriting1.mp4") // 网络视频1
-        videoList.add("/sdcard/taiyi/competition/start/copywriting2.mp4") // 网络视频2
-        videoList.add("/sdcard/taiyi/competition/start/copywriting3.mp4") // 本地视频（需申请存储权限）
+        videoList.add(R.raw.copywriting1) // 网络视频) // 网络视频) // 网络视频1
+        videoList.add(R.raw.copywriting2) // 网络视频2
+        videoList.add(R.raw.copywriting3) // 本地视频（需申请存储权限）
 
 
         // 初始化控件
@@ -71,14 +71,8 @@ class CopywritingActivity : AppCompatActivity() {
         }
 
         val currentVideoPath = videoList!!.get(currentIndex)
-        val videoUri: Uri?
 
-        // 区分本地视频和网络视频（本地路径以 file:// 开头，网络以 http/https 开头）
-        if (currentVideoPath.startsWith("http")) {
-            videoUri = Uri.parse(currentVideoPath) // 网络视频
-        } else {
-            videoUri = Uri.parse("file://" + currentVideoPath) // 本地视频（需传入绝对路径）
-        }
+        val videoUri = Uri.parse("android.resource://${packageName}/${currentVideoPath}")
 
         // 设置视频地址并播放
 
