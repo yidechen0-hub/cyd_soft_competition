@@ -8,8 +8,12 @@ import com.chaquo.python.Python
 import com.cyd.cyd_soft_competition.R
 import com.cyd.cyd_soft_competition.adapter.AiTestItem
 import com.cyd.cyd_soft_competition.adapter.mainAdapter
-import com.cyd.cyd_soft_competition.competitionActivity.EntryActivity
+import com.cyd.cyd_soft_competition.activity.competitionActivity.EntryActivity
+import com.cyd.cyd_soft_competition.activity.llmActivity.LLMActivity
 import com.cyd.cyd_soft_competition.databinding.ActivityMainBinding
+import com.cyd.cyd_soft_competition.remoteService.CommitAITaskActivity
+import com.cyd.cyd_soft_competition.remoteService.GetTasksResActivity
+import com.cyd.cyd_soft_competition.remoteService.TestFdsActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding // 视图绑定
@@ -33,6 +37,11 @@ class MainActivity : AppCompatActivity() {
             AiTestItem(resources.getString(R.string.mask_img), MaskDemoActivity::class.java),
             AiTestItem(resources.getString(R.string.entry), EntryActivity::class.java),
             AiTestItem(resources.getString(R.string.competition_buildDB), BuildDBActivity::class.java),
+            AiTestItem(resources.getString(R.string.fds), TestFdsActivity::class.java),
+            AiTestItem(resources.getString(R.string.llm), LLMActivity::class.java),
+            AiTestItem(resources.getString(R.string.GetTasksResActivity), GetTasksResActivity::class.java),
+            AiTestItem(resources.getString(R.string.CommitAITaskActivity), CommitAITaskActivity::class.java),
+
         )
         binding.rvMain.layoutManager = GridLayoutManager(this, 2)
         binding.rvMain.adapter = mainAdapter(this, mainTests)

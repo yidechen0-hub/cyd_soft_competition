@@ -461,4 +461,77 @@ class DatabaseManager(context: Context) {
             province = cursor.getString(cursor.getColumnIndexOrThrow("province"))
         )
     }
+
+    /**
+     * Update the URL for a specific image path
+     */
+    fun updateImageUrl(path: String, url: String) {
+        val db = dbHelper.writableDatabase
+        try {
+            val values = android.content.ContentValues().apply {
+                put("url", url)
+            }
+            val rowsAffected = db.update("image_metadata", values, "path = ?", arrayOf(path))
+            if (rowsAffected > 0) {
+                Log.d(TAG, "Updated URL for $path")
+            } else {
+                Log.w(TAG, "No metadata found for $path to update URL")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error updating URL for $path", e)
+        } finally {
+            db.close()
+        }
+    }
+
+    /**
+     * Get all image paths and their URLs where URL is not null
+     */
+    fun getAllImagePathsAndUrls(): List<Pair<String, String>> {
+        val db = dbHelper.readableDatabase
+        val list = mutableListOf<Pair<String, String>>()
+        val cursor = db.query(
+            "image_metadata",
+            arrayOf("path", "url"),
+            "url IS NOT NULL AND url != ''",
+            null,
+            null,
+            null,
+            null
+        )
+        while (cursor.moveToNext()) {
+            val path = cursor.getString(0)
+            val url = cursor.getString(1)
+            if (url == null) {
+                continue
+            }
+            list.add(Pair(path, url))
+        }
+        cursor.close()
+        return list
+    }
+
+    /**
+     * Update image analysis result (score, caption, tag)
+     */
+    fun updateImageAnalysisResult(path: String, score: Double, caption: String, tag: String) {
+        val db = dbHelper.writableDatabase
+        try {
+            val values = android.content.ContentValues().apply {
+                put("aesthetic_score", score)
+                put("vlm_caption", caption)
+                put("tag", tag)
+            }
+            val rowsAffected = db.update("image_metadata", values, "path = ?", arrayOf(path))
+            if (rowsAffected > 0) {
+                Log.d(TAG, "Updated analysis result for $path")
+            } else {
+                Log.w(TAG, "No metadata found for $path to update analysis result")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error updating analysis result for $path", e)
+        } finally {
+            db.close()
+        }
+    }
 }

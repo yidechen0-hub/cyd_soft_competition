@@ -136,4 +136,8 @@ class Messages(context: Context) {
         }
         return res
     }
+
+    fun getUrlPath(): List<Pair<String, String>> {
+        return dbManager.getAllImagePathsAndUrls()
+    }
 }

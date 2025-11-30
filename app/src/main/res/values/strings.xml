@@ -9,4 +9,8 @@
     <string name="mask_img">掩码图</string>
     <string name="entry">比赛入口</string>
     <string name="competition_buildDB">比赛建库</string>
+    <string name="fds">FDS上传</string>
+    <string name="llm">LLM</string>
+    <string name="CommitAITaskActivity">提交AI任务</string>
+    <string name="GetTasksResActivity">获取任务结果</string>
 </resources>
