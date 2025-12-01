@@ -31,7 +31,6 @@ class TopActivity : AppCompatActivity() {
 
         binding.ivBg.setOnClickListener {
             startActivity(Intent(this, EndingVedioActivity::class.java))
-            finish()
         }
     }
 

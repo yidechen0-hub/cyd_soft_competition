@@ -17,6 +17,7 @@ class CommitAITaskActivity : AppCompatActivity() {
     private val TAG = "CommitAITaskActivity"
     // Use HTTP as HTTPS certificate is not trusted
     private val BACKEND_BASE_URL = "http://non-planar-qwen-10032.kscn-tj5-cloudml.xiaomi.srv/caption_url"
+    private val BACKEND_BASE_URL2 = "http://staging-album-summary.srv/server/photoCommit"
     private val client = OkHttpClient()
     private lateinit var databaseManager: DatabaseManager
 
@@ -38,13 +39,12 @@ class CommitAITaskActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.Main).launch {
                 for ((index, pair) in list.withIndex()) {
                     val (path, url) = pair
-                    commitTask(url, path)
+                    commitTask(url, path, BACKEND_BASE_URL2)
                     
                     // Add 200ms delay between requests (5 requests per second)
                     if (index < list.size - 1) {
-                        delay(200)
+                        delay(300)
                     }
-                    break
                 }
             }
         }

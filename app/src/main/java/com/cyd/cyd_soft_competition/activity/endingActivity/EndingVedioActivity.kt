@@ -101,7 +101,6 @@ class EndingVedioActivity : AppCompatActivity() {
         } else {
             // 所有视频播放完毕，关闭页面（或提示用户）
             startActivity(Intent(this, EndingImgActivity::class.java))
-            finish()
         }
     }
 

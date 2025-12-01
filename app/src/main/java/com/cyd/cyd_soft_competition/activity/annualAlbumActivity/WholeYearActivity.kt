@@ -28,7 +28,6 @@ class WholeYearActivity : AppCompatActivity() {
                 }
                 1 ->{
                     startActivity(Intent(this, LoicationActivity::class.java))
-                    finish()
                 }
             }
         }

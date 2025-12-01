@@ -39,7 +39,6 @@ class FaceActivity : AppCompatActivity() {
         binding.clRoot.setOnClickListener {
             val intent = Intent(this, TransitionActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
     }

@@ -51,7 +51,7 @@ class BuildDBActivity : ComponentActivity() {
                 dbManager = DatabaseManager(this@BuildDBActivity)
                 dbManager.initializeTables()
 
-                val imageFiles = ImageScanner().scanDirectory("/sdcard/DCIM/test")
+                val imageFiles = ImageScanner().scanDirectory("/sdcard/taiyi/competition/test")
                 Log.i(TAG, "Found ${imageFiles.size} images.")
 
                 for (file in imageFiles) {

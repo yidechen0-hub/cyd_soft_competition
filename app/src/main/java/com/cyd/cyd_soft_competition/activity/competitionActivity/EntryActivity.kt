@@ -9,13 +9,14 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
+import com.cyd.cyd_soft_competition.R
 import com.cyd.cyd_soft_competition.databinding.ActivityEntryBinding
 
 
 class EntryActivity : AppCompatActivity() {
     private var vvPlayer: VideoView? = null
     private var ivNext: ImageView? = null
-    private val videoList: MutableList<String> = mutableListOf() // 所有视频的地址集合（本地路径/网络URL）
+    private val videoList: MutableList<Int> = mutableListOf() // 所有视频的地址集合（本地路径/网络URL）
     private var currentIndex = 0 // 当前播放的视频索引
     private lateinit var binding: ActivityEntryBinding
 
@@ -27,7 +28,7 @@ class EntryActivity : AppCompatActivity() {
 
         // 示例：构建视频列表（本地路径/网络URL）
 //        val videoList: MutableList<String?> = ArrayList<String?>()
-        videoList.add("/sdcard/taiyi/competition/start/begin_sence.mp4") // 网络视频1
+        videoList.add(R.raw.begin_sence) // 网络视频) // 网络视频) // 网络视频) // 网络视频1
 
 
 
@@ -61,14 +62,8 @@ class EntryActivity : AppCompatActivity() {
         }
 
         val currentVideoPath = videoList!!.get(currentIndex)
-        val videoUri: Uri?
 
-        // 区分本地视频和网络视频（本地路径以 file:// 开头，网络以 http/https 开头）
-        if (currentVideoPath.startsWith("http")) {
-            videoUri = Uri.parse(currentVideoPath) // 网络视频
-        } else {
-            videoUri = Uri.parse("file://" + currentVideoPath) // 本地视频（需传入绝对路径）
-        }
+        val videoUri = Uri.parse("android.resource://${packageName}/${currentVideoPath}")
 
         // 设置视频地址并播放
         vvPlayer!!.setVideoURI(videoUri)
@@ -120,7 +115,6 @@ class EntryActivity : AppCompatActivity() {
         } else {
             // 所有视频播放完毕，关闭页面（或提示用户）
             startActivity(Intent(this, CopywritingActivity::class.java))
-            finish()
         }
     }
 

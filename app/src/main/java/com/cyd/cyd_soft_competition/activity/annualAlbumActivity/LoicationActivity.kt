@@ -43,7 +43,6 @@ class LoicationActivity : AppCompatActivity() {
 
             1 -> {
                 startActivity(Intent(this, FaceActivity::class.java))
-                finish()
             }
 
         }

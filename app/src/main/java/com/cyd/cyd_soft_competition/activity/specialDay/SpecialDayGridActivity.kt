@@ -36,7 +36,6 @@ class SpecialDayGridActivity : AppCompatActivity() {
 
         binding.ivBg.setOnClickListener {
             startActivity(Intent(this, TopTransitionActivity::class.java))
-            finish()
         }
     }
 

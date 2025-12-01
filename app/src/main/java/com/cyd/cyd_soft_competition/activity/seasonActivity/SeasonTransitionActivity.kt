@@ -21,11 +21,9 @@ class SeasonTransitionActivity : AppCompatActivity() {
 
         binding.vvPlayer.setOnClickListener {
             startActivity(Intent(this, SeasonActivity::class.java))
-            finish()
         }
         binding.vvPlayer.setOnCompletionListener {
             startActivity(Intent(this, SeasonActivity::class.java))
-            finish()
         }
 
     }

@@ -98,7 +98,6 @@ class CopywritingActivity : AppCompatActivity() {
     private fun setNextClickListener() {
         ivNext?.setOnClickListener {
             startActivity(Intent(this, FirstImgActivity::class.java))
-            finish()
         }
     }
 

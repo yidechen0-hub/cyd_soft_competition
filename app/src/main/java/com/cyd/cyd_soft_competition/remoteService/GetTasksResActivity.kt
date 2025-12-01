@@ -15,7 +15,7 @@ import java.io.IOException
 class GetTasksResActivity : AppCompatActivity() {
     private val TAG = "GetTasksResActivity"
     // TODO: Extract to a common configuration
-    private val BACKEND_BASE_URL = "http://YOUR_SERVER_IP:10033/admin"
+    private val BACKEND_BASE_URL = "http://staging-album-summary.srv"
     private val client = OkHttpClient()
     private lateinit var databaseManager: DatabaseManager
     private lateinit var logTextView: TextView
@@ -91,16 +91,19 @@ class GetTasksResActivity : AppCompatActivity() {
                                 var updatedCount = 0
                                 for (i in 0 until dataArray.length()) {
                                     val item = dataArray.getJSONObject(i)
-                                    val filePath = item.optString("filePath")
+                                    Log.i(TAG, "Processing item: $item")
+                                    val downloadUrl = item.optString("downloadUrl")
                                     val result = item.optJSONObject("result")
                                     
-                                    if (filePath.isNotEmpty() && result != null) {
+                                    if (downloadUrl.isNotEmpty() && result != null) {
                                         val score = result.optDouble("score", 0.0)
                                         val caption = result.optString("caption", "")
                                         val tag = result.optString("tag", "")
                                         
-                                        databaseManager.updateImageAnalysisResult(filePath, score, caption, tag)
+                                        databaseManager.updateImageAnalysisResultByUrl(downloadUrl, score, caption, tag)
                                         updatedCount++
+                                    } else {
+                                        Log.w(TAG, "Skipping item: downloadUrl=$downloadUrl, result=$result")
                                     }
                                 }
                                 runOnUiThread { appendLog("Updated $updatedCount items.") }

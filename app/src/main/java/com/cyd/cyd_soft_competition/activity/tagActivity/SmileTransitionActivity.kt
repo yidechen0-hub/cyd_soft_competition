@@ -22,7 +22,6 @@ class SmileTransitionActivity : AppCompatActivity() {
         binding.clRoot.setOnClickListener {
             val intent = Intent(this, SmileVedioActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
 

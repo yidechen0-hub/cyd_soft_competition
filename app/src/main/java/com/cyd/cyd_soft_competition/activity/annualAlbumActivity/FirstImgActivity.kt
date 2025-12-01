@@ -47,7 +47,6 @@ class FirstImgActivity : AppCompatActivity() {
         binding.clRoot.setOnClickListener {
             val intent = Intent(this, WholeYearActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
     }

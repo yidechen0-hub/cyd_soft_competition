@@ -89,6 +89,18 @@
         android:textColor="@android:color/white"
         android:layout_marginBottom="32dp"/>
 
+    <!-- 批量更新数据库按钮 -->
+    <Button
+        android:id="@+id/btn_batch_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="批量更新数据库地址"
+        android:textSize="16sp"
+        android:padding="12dp"
+        android:backgroundTint="@color/design_default_color_primary"
+        android:textColor="@android:color/white"
+        android:layout_marginBottom="32dp"/>
+
     <!-- 结果显示区域 -->
     <ScrollView
         android:layout_width="match_parent"

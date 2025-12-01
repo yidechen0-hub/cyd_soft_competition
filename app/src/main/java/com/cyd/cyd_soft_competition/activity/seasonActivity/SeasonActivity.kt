@@ -67,7 +67,6 @@ class SeasonActivity : AppCompatActivity() {
         itemBinding.root.setOnClickListener {
             val intent = Intent(this, SpecialDayTransitionActivity::class.java)
             startActivity(intent)
-            finish()
         }
         
         // 添加到容器

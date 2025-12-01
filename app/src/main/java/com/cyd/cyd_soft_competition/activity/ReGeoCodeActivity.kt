@@ -10,14 +10,16 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.cyd.cyd_soft_competition.contentdb.BuildDB
+import com.cyd.cyd_soft_competition.buildDB.DatabaseManager
+import com.cyd.cyd_soft_competition.buildDB.ReverseGeoCoder
+import com.cyd.cyd_soft_competition.databinding.ActivityReGeoCodeBinding
+import com.cyd.cyd_soft_competition.re_geo_code.BuildGeoDB
 import com.cyd.cyd_soft_competition.re_geo_code.ReGeoCodeUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.cyd.cyd_soft_competition.databinding.ActivityReGeoCodeBinding
-import com.cyd.cyd_soft_competition.re_geo_code.BuildGeoDB
 
 class ReGeoCodeActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -26,8 +28,10 @@ class ReGeoCodeActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var etLatitude: EditText
     private lateinit var btnQuery: Button
     private lateinit var btnBuildGeo: Button
+    private lateinit var btnBatchUpdate: Button
     private lateinit var tvResult: TextView
     private val buildGeoDB: BuildGeoDB by lazy { BuildGeoDB() }
+    private lateinit var databaseManager: DatabaseManager
 
     private lateinit var binding: ActivityReGeoCodeBinding
 
@@ -35,6 +39,8 @@ class ReGeoCodeActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = ActivityReGeoCodeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        databaseManager = DatabaseManager(this)
 
         // 初始化控件
         initView()
@@ -57,6 +63,10 @@ class ReGeoCodeActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }.start()
         }
+        
+        btnBatchUpdate.setOnClickListener {
+            startBatchUpdate()
+        }
     }
 
     /**
@@ -68,6 +78,7 @@ class ReGeoCodeActivity : AppCompatActivity(), View.OnClickListener {
         btnQuery = binding.btnQuery
         tvResult = binding.tvResult
         btnBuildGeo = binding.btnBuildGeo
+        btnBatchUpdate = binding.btnBatchUpdate
     }
 
     /**
@@ -94,6 +105,79 @@ class ReGeoCodeActivity : AppCompatActivity(), View.OnClickListener {
     private fun setDefaultLatLng() {
         etLongitude.setText("116.480881")
         etLatitude.setText("39.989410")
+    }
+    
+    private fun startBatchUpdate() {
+        if (!ReGeoCodeUtils.isNetworkAvailable(this)) {
+            Toast.makeText(this, "网络不可用，请检查网络设置", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        tvResult.text = "开始批量更新..."
+        btnBatchUpdate.isEnabled = false
+        btnQuery.isEnabled = false
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val images = databaseManager.getImagesWithoutLocation()
+            withContext(Dispatchers.Main) {
+                tvResult.text = "找到 ${images.size} 张需要更新位置的照片..."
+            }
+
+            if (images.isEmpty()) {
+                withContext(Dispatchers.Main) {
+                    tvResult.append("\n没有需要更新的照片。")
+                    btnBatchUpdate.isEnabled = true
+                    btnQuery.isEnabled = true
+                }
+                return@launch
+            }
+
+            var successCount = 0
+            var failCount = 0
+
+            for ((index, image) in images.withIndex()) {
+                withContext(Dispatchers.Main) {
+                    tvResult.text = "正在处理第 ${index + 1}/${images.size} 张...\n路径: ${image.path}"
+                }
+
+                if (image.latitude == null || image.longitude == null){
+                    continue
+                }
+
+                // Use ReverseGeoCoder instead of ReGeoCodeUtils
+                val result = ReverseGeoCoder.getGlobalAddress(image.latitude, image.longitude)
+                
+                if (result.isSuccess && result.addressInfo != null) {
+                    val info = result.addressInfo
+                    val country = info.country ?: "中国" // Default or from result
+                    val province = info.province ?: ""
+                    
+                    // If province is empty but city is not, use city as province (common for municipalities)
+                    val finalProvince = if (province.isEmpty()) info.city ?: "" else province
+                    
+                    databaseManager.updateLocation(image.path, country, finalProvince)
+                    successCount++
+                    withContext(Dispatchers.Main) {
+                        tvResult.append("\n成功: $finalProvince")
+                    }
+                } else {
+                    failCount++
+                    withContext(Dispatchers.Main) {
+                        tvResult.append("\n失败: ${result.msg}")
+                    }
+                }
+                
+                // Rate limiting to avoid API ban
+                delay(300) 
+            }
+
+            withContext(Dispatchers.Main) {
+                tvResult.append("\n\n更新完成！\n成功: $successCount\n失败: $failCount")
+                btnBatchUpdate.isEnabled = true
+                btnQuery.isEnabled = true
+                Toast.makeText(this@ReGeoCodeActivity, "批量更新完成", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     /**

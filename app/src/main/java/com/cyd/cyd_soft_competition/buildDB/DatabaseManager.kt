@@ -534,4 +534,77 @@ class DatabaseManager(context: Context) {
             db.close()
         }
     }
+
+    /**
+     * Update image analysis result by URL (score, caption, tag)
+     */
+    fun updateImageAnalysisResultByUrl(url: String, score: Double, caption: String, tag: String) {
+        val db = dbHelper.writableDatabase
+        try {
+            val values = android.content.ContentValues().apply {
+                put("aesthetic_score", score)
+                put("vlm_caption", caption)
+                put("tag", tag)
+            }
+            val rowsAffected = db.update("image_metadata", values, "url = ?", arrayOf(url))
+            if (rowsAffected > 0) {
+                Log.d(TAG, "Updated analysis result for URL $url")
+            } else {
+                Log.w(TAG, "No metadata found for URL $url to update analysis result")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error updating analysis result for URL $url", e)
+        } finally {
+            db.close()
+        }
+    }
+
+
+
+    /**
+     * Get images that have coordinates but missing country/province
+     * Returns list of ImageMetadataInfo
+     */
+    fun getImagesWithoutLocation(): List<ImageMetadataInfo> {
+        val db = dbHelper.readableDatabase
+        val list = mutableListOf<ImageMetadataInfo>()
+        // Select images where lat/long are not 0 (assuming 0,0 is invalid or default) and (country is null/empty OR province is null/empty)
+        val cursor = db.query(
+            "image_metadata",
+            null,
+            "(latitude != 0 OR longitude != 0) AND (country IS NULL OR country = '' OR province IS NULL OR province = '')",
+            null,
+            null,
+            null,
+            null
+        )
+        while (cursor.moveToNext()) {
+            list.add(cursorToMetadata(cursor))
+        }
+        cursor.close()
+        return list
+    }
+
+    /**
+     * Update location (country, province) for a specific image path
+     */
+    fun updateLocation(path: String, country: String, province: String) {
+        val db = dbHelper.writableDatabase
+        try {
+            val values = android.content.ContentValues().apply {
+                put("country", country)
+                put("province", province)
+            }
+            val rowsAffected = db.update("image_metadata", values, "path = ?", arrayOf(path))
+            if (rowsAffected > 0) {
+                Log.d(TAG, "Updated location for $path: $country, $province")
+            } else {
+                Log.w(TAG, "No metadata found for $path to update location")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error updating location for $path", e)
+        } finally {
+            db.close()
+        }
+    }
 }

@@ -28,7 +28,6 @@ class SpecialDayDetailActivity : AppCompatActivity() {
 
         binding.root.setOnClickListener {
             startActivity(Intent(this, SpecialDayGridActivity::class.java))
-            finish()
         }
 
         val date = Messages(this).getSpecialDayDate()

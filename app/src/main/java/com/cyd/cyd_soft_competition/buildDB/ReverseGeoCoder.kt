@@ -16,7 +16,7 @@ import java.net.URLEncoder
  */
 object ReverseGeoCoder {
     private val TAG = "ReverseGeoCoder"
-    private const val BIGDATA_API_KEY = "bdc_fc9ccde59c67415f873114a080980c66"
+    private const val BIGDATA_API_KEY = "bdc_8f581bb5f07646bc8cbdb42208203b2f"
     private const val BIGDATA_RE_GEO_URL = "https://api.bigdatacloud.net/data/reverse-geocode-client"
 
     fun getGlobalAddress(latitude: Double, longitude: Double): ReGeoResult {

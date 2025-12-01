@@ -50,7 +50,6 @@ class TransitionActivity : AppCompatActivity() {
             }
             1 ->{
                 startActivity(Intent(this, SmileTransitionActivity::class.java))
-                finish()
             }
 
         }

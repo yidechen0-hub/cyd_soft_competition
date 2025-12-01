@@ -17,7 +17,6 @@ class SpecialDayTransitionActivity : AppCompatActivity() {
 
         binding.root.setOnClickListener {
             startActivity(Intent(this, SpecialDayDetailActivity::class.java))
-            finish()
         }
     }
 }

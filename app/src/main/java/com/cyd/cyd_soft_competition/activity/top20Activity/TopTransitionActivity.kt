@@ -25,7 +25,6 @@ class TopTransitionActivity : AppCompatActivity() {
         }
         binding.vvPlayer.setOnCompletionListener {
             startActivity(Intent(this, TopActivity::class.java))
-            finish()
         }
 
     }

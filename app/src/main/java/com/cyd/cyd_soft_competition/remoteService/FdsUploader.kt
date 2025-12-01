@@ -10,7 +10,11 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 
 object FdsUploader {
-    private val client = OkHttpClient()
+    private val client = OkHttpClient.Builder()
+        .connectTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
+        .readTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
+        .writeTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
+        .build()
     private val gson = Gson()
     private const val TAG = "FDSUploader"
     // Replace with your actual backend server address

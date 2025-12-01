@@ -1,8 +1,10 @@
 package com.cyd.cyd_soft_competition.activity.endingActivity
 
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.cyd.cyd_soft_competition.activity.MainActivity
 import com.cyd.cyd_soft_competition.databinding.ActivityEndingImgBinding
 
 
@@ -14,6 +16,7 @@ class EndingImgActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.ivBg.setOnClickListener {
+            startActivity(Intent(this@EndingImgActivity, MainActivity::class.java))
             finish()
         }
 
