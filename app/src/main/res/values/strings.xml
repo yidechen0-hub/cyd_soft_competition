@@ -13,4 +13,5 @@
     <string name="llm">LLM</string>
     <string name="CommitAITaskActivity">提交AI任务</string>
     <string name="GetTasksResActivity">获取任务结果</string>
+    <string name="InsightDetailActivity">洞察详情特效</string>
 </resources>

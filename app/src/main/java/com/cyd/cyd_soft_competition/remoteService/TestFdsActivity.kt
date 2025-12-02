@@ -3,7 +3,6 @@ package com.cyd.cyd_soft_competition.remoteService
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import java.io.File
 import com.cyd.cyd_soft_competition.buildDB.DatabaseManager

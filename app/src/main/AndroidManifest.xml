@@ -101,6 +101,9 @@
             android:exported="true"/>
         <activity android:name=".remoteService.CommitAITaskActivity"
             android:exported="true"/>
+        <activity android:name=".activity.InsightDetailActivity"
+            android:exported="true"/>
+
 
 
 

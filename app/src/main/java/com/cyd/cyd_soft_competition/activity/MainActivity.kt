@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
             AiTestItem(resources.getString(R.string.llm), LLMActivity::class.java),
             AiTestItem(resources.getString(R.string.GetTasksResActivity), GetTasksResActivity::class.java),
             AiTestItem(resources.getString(R.string.CommitAITaskActivity), CommitAITaskActivity::class.java),
+            AiTestItem(resources.getString(R.string.InsightDetailActivity), InsightDetailActivity::class.java),
 
         )
         binding.rvMain.layoutManager = GridLayoutManager(this, 2)

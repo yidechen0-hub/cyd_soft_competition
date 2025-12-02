@@ -7,8 +7,12 @@ import android.os.Bundle
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 import com.cyd.cyd_soft_competition.R
-import com.cyd.cyd_soft_competition.activity.annualAlbumActivity.FirstImgActivity
+import com.cyd.cyd_soft_competition.activity.InsightDetailActivity
 import com.cyd.cyd_soft_competition.databinding.ActivityEndingVedioBinding
+import com.cyd.cyd_soft_competition.llm.PersonaGenerator
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import androidx.lifecycle.lifecycleScope
 
 
 class EndingVedioActivity : AppCompatActivity() {
@@ -17,6 +21,7 @@ class EndingVedioActivity : AppCompatActivity() {
     private val videoList: MutableList<Int> = mutableListOf() // 所有视频的地址集合（本地路径/网络URL）
     private var currentIndex = 0 // 当前播放的视频索引
     private lateinit var binding: ActivityEndingVedioBinding
+    private var resultJson: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +44,7 @@ class EndingVedioActivity : AppCompatActivity() {
         binding.vvPlayer.setOnClickListener {
             playNextVideo()
         }
+        loadInsightData()
 
     }
 
@@ -69,6 +75,19 @@ class EndingVedioActivity : AppCompatActivity() {
 
     }
 
+    private fun loadInsightData() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val dbPath = getDatabasePath("competition_database.db").absolutePath
+            try {
+                val resultObj = PersonaGenerator(dbPath, null).generate()
+                resultJson = resultObj!!.toString(2)
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
     /**
      * 监听视频播放完成事件
      */
@@ -78,8 +97,9 @@ class EndingVedioActivity : AppCompatActivity() {
 //        }
         vvPlayer?.setOnCompletionListener {
             if (currentIndex == videoList!!.size - 1){
-                startActivity(Intent(this, FirstImgActivity::class.java))
-                finish()
+                val intent: Intent = Intent(this, InsightDetailActivity::class.java)
+                intent.putExtra("resultJson", resultJson ?: "{}")
+                startActivity(intent)
             }
             playNextVideo()
         }
@@ -100,7 +120,9 @@ class EndingVedioActivity : AppCompatActivity() {
             initPlayer()
         } else {
             // 所有视频播放完毕，关闭页面（或提示用户）
-            startActivity(Intent(this, EndingImgActivity::class.java))
+            val intent: Intent = Intent(this, InsightDetailActivity::class.java)
+            intent.putExtra("resultJson", resultJson ?: "{}")
+            startActivity(intent)
         }
     }
 

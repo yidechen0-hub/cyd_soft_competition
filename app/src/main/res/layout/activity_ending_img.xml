@@ -23,6 +23,70 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+    <!-- 第一个 TextView：tv_count_img -->
+
+    <!-- 第二个 TextView：tv_count_country -->
+    <TextView
+        android:id="@+id/tv_count_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="56dp"
+        android:layout_marginTop="244dp"
+        android:fontFamily="MiSans"
+        android:gravity="start"
+        android:text="7月5日"
+        android:textColor="#ffffff"
+        android:textFontWeight="200"
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="@+id/iv_bg"
+        app:layout_constraintTop_toTopOf="@id/iv_bg" />
+
+    <!-- 第三个 TextView：tv_count_smile -->
+    <TextView
+        android:id="@+id/tv_count_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="56dp"
+        android:layout_marginTop="112dp"
+        android:fontFamily="MiSans"
+        android:gravity="start"
+        android:text="7月5日"
+        android:textColor="#ffffff"
+        android:textFontWeight="200"
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="@+id/iv_bg"
+        app:layout_constraintTop_toTopOf="@id/tv_count_img" />
+
+    <!-- 第四个 TextView：tv_tag -->
+    <TextView
+        android:id="@+id/tv_count_smile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="56dp"
+        android:layout_marginTop="112dp"
+        android:fontFamily="MiSans"
+        android:gravity="start"
+        android:text="7月5日"
+        android:textColor="#ffffff"
+        android:textFontWeight="200"
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="@+id/iv_bg"
+        app:layout_constraintTop_toTopOf="@id/tv_count_country" />
+
+    <TextView
+        android:id="@+id/tv_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="56dp"
+        android:layout_marginTop="112dp"
+        android:fontFamily="MiSans"
+        android:gravity="start"
+        android:text="7月5日"
+        android:textColor="#ffffff"
+        android:textFontWeight="200"
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="@+id/iv_bg"
+        app:layout_constraintTop_toTopOf="@id/tv_count_smile" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

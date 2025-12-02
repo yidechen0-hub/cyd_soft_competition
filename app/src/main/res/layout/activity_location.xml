@@ -15,6 +15,7 @@
     <!-- 用 ImageView 显示图标，点击效果和 Button 一致 -->
     <TextView
         android:id="@+id/tv_location"
+        android:fontFamily="MiSans"
         android:text="你在三个国家，25个城市"
         android:textSize="24sp"
         android:textColor="#FFFFFF"
@@ -30,6 +31,8 @@
     <TextView
         android:id="@+id/tv_location2"
         android:text="照片记录下了你的足迹"
+        android:fontFamily="MiSans"
+        android:layout_gravity="center_horizontal"
         android:textSize="16sp"
         android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
@@ -45,6 +48,8 @@
     <TextView
         android:id="@+id/tv_location3"
         android:text="这些风景也留下了你"
+        android:fontFamily="MiSans"
+        android:layout_gravity="center_horizontal"
         android:textSize="24sp"
         android:textColor="#FFFFFF"
         android:layout_width="wrap_content"

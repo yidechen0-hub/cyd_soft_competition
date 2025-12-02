@@ -32,20 +32,20 @@ class LoicationActivity : AppCompatActivity() {
     }
 
     private fun clicked() {
-        when (current) {
-            0 -> {
-                current = 1
-                playForegroundVideoFromRaw()
-                binding.tvLocation2.visibility = View.VISIBLE
-                binding.tvLocation3.visibility = View.VISIBLE
-
-            }
-
-            1 -> {
+//        when (current) {
+//            0 -> {
+//                current = 1
+//                playForegroundVideoFromRaw()
+//                binding.tvLocation2.visibility = View.VISIBLE
+//                binding.tvLocation3.visibility = View.VISIBLE
+//
+//            }
+//
+//            1 -> {
                 startActivity(Intent(this, FaceActivity::class.java))
-            }
-
-        }
+//            }
+//
+//        }
     }
 
     /**

@@ -38,14 +38,16 @@
         android:id="@+id/tv_time"
         android:layout_width="100dp"
         android:layout_height="21dp"
-        android:layout_marginLeft="152dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="116dp"
+        android:fontFamily="MiSans"
         android:gravity="center"
         android:text="7月5日"
         android:textColor="#ffffff"
         android:textFontWeight="200"
         android:textSize="16sp"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="@+id/iv_bg"
+        app:layout_constraintRight_toRightOf="@+id/iv_bg"
         app:layout_constraintTop_toTopOf="@id/iv_bg" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
