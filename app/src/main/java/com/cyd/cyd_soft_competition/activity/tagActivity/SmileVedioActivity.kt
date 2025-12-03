@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.cyd.cyd_soft_competition.R
 import com.cyd.cyd_soft_competition.activity.seasonActivity.SeasonTransitionActivity
+import com.cyd.cyd_soft_competition.buildDB.DatabaseManager
 import com.cyd.cyd_soft_competition.databinding.ActivitySmileVedioBinding
 import java.io.File
 import java.util.Timer
@@ -33,7 +34,7 @@ class SmileVedioActivity : AppCompatActivity() {
         binding = ActivitySmileVedioBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        loadImages()
+//        loadImages()
         setupViewPager()
 
         binding.clRoot.setOnClickListener {
@@ -61,7 +62,8 @@ class SmileVedioActivity : AppCompatActivity() {
     }
 
     private fun setupViewPager() {
-        if (imagePaths.isEmpty()) return
+//        if (imagePaths.isEmpty()) return
+        val imagePaths = DatabaseManager(this).getSmileVideoPath()
 
         val adapter = SmileImageAdapter(imagePaths)
         binding.vpSmile.adapter = adapter
