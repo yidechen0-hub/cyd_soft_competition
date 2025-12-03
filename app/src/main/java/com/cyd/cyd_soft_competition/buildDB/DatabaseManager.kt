@@ -147,11 +147,60 @@ class DatabaseManager(context: Context) {
 
     fun getSmileCount(): Int {
         val db = dbHelper.readableDatabase
-        return android.database.DatabaseUtils.queryNumEntries(db, "url_count").toInt()
+        var count = 0
+        val cursor = db.query(
+            "url_count",
+            arrayOf("count"),
+            "count = ?",
+            arrayOf("-1"),
+            null,
+            null,
+            null
+        )
+        count = cursor.count
+        cursor.close()
+        return count
     }
 
-    fun getSmileVideoPath(): String? {
-        return null
+    fun getSmileVideoPath(): List<String> {
+        val db = dbHelper.readableDatabase
+        val paths = mutableListOf<String>()
+
+        // 1. Get URLs from url_count where count != -1
+        val cursorUrl = db.query(
+            "url_count",
+            arrayOf("url"),
+            "count = ?",
+            arrayOf("-1"),
+            null,
+            null,
+            null
+        )
+
+        val urls = mutableListOf<String>()
+        while (cursorUrl.moveToNext()) {
+            urls.add(cursorUrl.getString(0))
+        }
+        cursorUrl.close()
+
+        // 2. Find paths in image_metadata for these URLs
+        for (url in urls) {
+            val cursorPath = db.query(
+                "image_metadata",
+                arrayOf("path"),
+                "url = ?",
+                arrayOf(url),
+                null,
+                null,
+                null
+            )
+            if (cursorPath.moveToFirst()) {
+                paths.add(cursorPath.getString(0))
+            }
+            cursorPath.close()
+        }
+
+        return paths
     }
 
     fun getSeasonPaths(): List<String> {
@@ -211,38 +260,27 @@ class DatabaseManager(context: Context) {
     }
 
     fun getFacePaths(): List<String> {
-        val urls = getFaceUrl()
-        val localPaths = mutableListOf<String>()
-        val dirPath = "/sdcard/taiyi/competition/face/"
-        val dir = java.io.File(dirPath)
-        if (!dir.exists()) {
-            dir.mkdirs()
-        }
+        val db = dbHelper.readableDatabase
+        val paths = mutableListOf<String>()
 
-        for ((index, url) in urls.withIndex()) {
-            // Generate a filename. You might want to extract extension or use a hash.
-            // For simplicity, using face_{index}.jpg (assuming jpg or handling generic)
-            // Or try to keep original name if possible.
-            val fileName = "face_${index + 1}.jpg" 
-            val file = java.io.File(dir, fileName)
-            
-            // Download if not exists or overwrite? User said "save to", implies action.
-            // But for performance, maybe check existence? 
-            // Let's try to download.
-            if (downloadFile(url, file)) {
-                localPaths.add(file.absolutePath)
-            } else {
-                // If download fails, maybe add a placeholder or skip?
-                // For now, let's just log it and maybe add the path anyway if it exists?
-                if (file.exists()) {
-                    localPaths.add(file.absolutePath)
-                }
-            }
+        // 1. Get URLs from url_count where count != -1
+        val cursorUrl = db.query(
+            "url_count",
+            arrayOf("url"),
+            "count != ?",
+            arrayOf("-1"),
+            null,
+            null,
+            null
+        )
+
+        val urls = mutableListOf<String>()
+        while (cursorUrl.moveToNext()) {
+            urls.add(cursorUrl.getString(0))
         }
-        
-        // Ensure we have enough paths to avoid crashes in UI if possible, 
-        // but strictly following logic, we return what we have.
-        return localPaths
+        cursorUrl.close()
+
+        return urls
     }
 
     private fun downloadFile(urlStr: String, destFile: java.io.File): Boolean {
@@ -603,6 +641,42 @@ class DatabaseManager(context: Context) {
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error updating location for $path", e)
+        } finally {
+            db.close()
+        }
+    }
+
+
+    /**
+     * Update face URL count in url_count table
+     */
+    fun updateFaceUrlCount(url: String, count: Int) {
+        val db = dbHelper.writableDatabase
+        try {
+            val values = android.content.ContentValues().apply {
+                put("url", url)
+                put("count", count)
+            }
+            // Insert or replace
+            db.insertWithOnConflict("url_count", null, values, android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE)
+            Log.d(TAG, "Updated url_count: url=$url, count=$count")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error updating url_count for $url", e)
+        } finally {
+            db.close()
+        }
+    }
+
+    /**
+     * Clear all data from url_count table
+     */
+    fun clearUrlCount() {
+        val db = dbHelper.writableDatabase
+        try {
+            db.delete("url_count", null, null)
+            Log.d(TAG, "Cleared url_count table")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error clearing url_count table", e)
         } finally {
             db.close()
         }

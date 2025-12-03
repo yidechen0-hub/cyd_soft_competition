@@ -1,10 +1,12 @@
 package com.cyd.cyd_soft_competition.dbmsg
 
 import android.content.Context
+import android.util.Log
 import com.cyd.cyd_soft_competition.buildDB.DatabaseManager
 
 class Messages(context: Context) {
     private val dbManager = DatabaseManager(context)
+    private val context = context
 
     // 从数据库中获取今年第一张图片的时间信息
     fun getFirstImgMsg(): String {
@@ -55,12 +57,18 @@ class Messages(context: Context) {
     }
 
     fun getFacePath(): List<String>  {
-//        val paths = dbManager.getFacePaths()
-//        return if (paths.isNotEmpty()) paths else emptyList()
+        val paths = dbManager.getFacePaths()
+        val res = mutableListOf<String>()
+        for (path in paths){
+            Log.i("getFacePath", "path: $path")
+            val localPath = ImageDownloader.downloadImage(path, context)
+            res.add(localPath ?: "")
+        }
+        return if (res.isNotEmpty()) res else emptyList()
 
-        return listOf("/sdcard/taiyi/competition/start/face1.JPG",
-                    "/sdcard/taiyi/competition/start/face1.JPG",
-                    "/sdcard/taiyi/competition/start/face1.JPG")
+//        return listOf("/sdcard/taiyi/competition/start/face1.JPG",
+//                    "/sdcard/taiyi/competition/start/face1.JPG",
+//                    "/sdcard/taiyi/competition/start/face1.JPG")
 
     }
 
@@ -80,9 +88,9 @@ class Messages(context: Context) {
 
     // 从数据库中获取笑脸数量
     fun getSmileCounts(): String {
-//        val count = dbManager.getSmileCount()
-//        return "你的笑容出现了${count}次"
-        return "你的笑容出现了1000次"
+        val count = dbManager.getSmileCount()
+        return "你们的笑容出现了${count}次"
+//        return "你的笑容出现了1000次"
     }
 
     fun getSmileVedioPath(): String{

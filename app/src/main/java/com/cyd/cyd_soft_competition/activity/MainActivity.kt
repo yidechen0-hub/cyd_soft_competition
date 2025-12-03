@@ -12,6 +12,8 @@ import com.cyd.cyd_soft_competition.activity.competitionActivity.EntryActivity
 import com.cyd.cyd_soft_competition.activity.llmActivity.LLMActivity
 import com.cyd.cyd_soft_competition.databinding.ActivityMainBinding
 import com.cyd.cyd_soft_competition.remoteService.CommitAITaskActivity
+import com.cyd.cyd_soft_competition.remoteService.CommitFaceTaskActivity
+import com.cyd.cyd_soft_competition.remoteService.GetFaceResActivity
 import com.cyd.cyd_soft_competition.remoteService.GetTasksResActivity
 import com.cyd.cyd_soft_competition.remoteService.TestFdsActivity
 
@@ -42,6 +44,8 @@ class MainActivity : AppCompatActivity() {
             AiTestItem(resources.getString(R.string.GetTasksResActivity), GetTasksResActivity::class.java),
             AiTestItem(resources.getString(R.string.CommitAITaskActivity), CommitAITaskActivity::class.java),
             AiTestItem(resources.getString(R.string.InsightDetailActivity), InsightDetailActivity::class.java),
+            AiTestItem(resources.getString(R.string.CommitFaceTaskActivity), CommitFaceTaskActivity::class.java),
+            AiTestItem(resources.getString(R.string.GetFaceResActivity), GetFaceResActivity::class.java),
 
         )
         binding.rvMain.layoutManager = GridLayoutManager(this, 2)
