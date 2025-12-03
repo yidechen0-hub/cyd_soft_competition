@@ -84,7 +84,7 @@ class InsightDetailActivity : AppCompatActivity() {
 
         // 1. 展示场景（打字机效果）
         val tvScene = findViewById<TextView>(R.id.tvScene)
-        val sceneText = "🎬 场景：${jsonObj.optString("scene")}"
+        val sceneText = ""
         handler.postDelayed({
             showViewWithFade(tvScene)
             typewriterEffect(tvScene, sceneText)

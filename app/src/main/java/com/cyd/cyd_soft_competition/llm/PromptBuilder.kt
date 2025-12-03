@@ -28,7 +28,7 @@ object PromptBuilder {
 请严格输出以下 JSON（不能有多余文字、说明、注释、markdown）：
 
 {
-  "scene": "year_review | stress_relief | travel_memory | night_reflection",
+  
 
   "summary": "可直接用于年度总结的文案（如：“在清晨公园与深夜书桌间，藏着你努力生活的模样”）",
 
