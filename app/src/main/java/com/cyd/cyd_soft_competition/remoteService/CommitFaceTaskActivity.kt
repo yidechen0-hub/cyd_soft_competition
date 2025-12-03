@@ -17,7 +17,7 @@ class CommitFaceTaskActivity : AppCompatActivity() {
     private val TAG = "CommitFaceTaskActivity"
     // Use HTTP as HTTPS certificate is not trusted
     private val BACKEND_BASE_URL = "http://non-planar-qwen-10032.kscn-tj5-cloudml.xiaomi.srv/caption_url"
-    private val BACKEND_BASE_URL2 = "http://staging-album-summary.srv/face-cluster/faceRecognitionTask"
+    private val BACKEND_BASE_URL2 = "http://staging-album-summary.srv/server/faceRecognitionTask"
     private val client = OkHttpClient()
     private lateinit var databaseManager: DatabaseManager
 
