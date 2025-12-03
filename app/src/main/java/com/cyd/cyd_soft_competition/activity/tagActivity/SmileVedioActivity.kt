@@ -25,7 +25,7 @@ class SmileVedioActivity : AppCompatActivity() {
     private val imagePaths = mutableListOf<String>()
     private var currentPage = 0
     private var timer: Timer? = null
-    private val DELAY_MS: Long = 200
+    private val DELAY_MS: Long = 100
     private val PERIOD_MS: Long = 3000
     private val SMILE_DIR = "/sdcard/taiyi/competition/smile/"
 

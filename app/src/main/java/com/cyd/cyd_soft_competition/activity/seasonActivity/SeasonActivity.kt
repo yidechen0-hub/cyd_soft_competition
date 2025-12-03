@@ -31,10 +31,10 @@ class SeasonActivity : AppCompatActivity() {
 
         // 创建季节数据列表
         val seasonItems = listOf(
-            SeasonItem("春天，是万物复苏的生机", seasonPaths.getOrElse(0) { "" }, R.drawable.spring),
-            SeasonItem("夏天，是热情似火的活力", seasonPaths.getOrElse(1) { "" }, R.drawable.summer),
-            SeasonItem("秋天，是硕果累累的收获", seasonPaths.getOrElse(2) { "" }, R.drawable.autumn),
-            SeasonItem("冬天，是银装素裹的宁静", seasonPaths.getOrElse(3) { "" }, R.drawable.winter)
+            SeasonItem("春风路过，灯海也温柔", seasonPaths.getOrElse(0) { "" }, R.drawable.spring),
+            SeasonItem("烈日灼心，古楼静候千年", seasonPaths.getOrElse(1) { "" }, R.drawable.summer),
+            SeasonItem("秋灯初上，古镇慢慢亮了", seasonPaths.getOrElse(2) { "" }, R.drawable.autumn),
+            SeasonItem("冬日机场，风也有了方向", seasonPaths.getOrElse(3) { "" }, R.drawable.winter)
         )
 
         // 动态添加季节视图到 LinearLayout

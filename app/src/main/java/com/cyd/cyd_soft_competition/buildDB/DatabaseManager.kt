@@ -200,7 +200,7 @@ class DatabaseManager(context: Context) {
             cursorPath.close()
         }
 
-        return paths
+        return paths.shuffled()
     }
 
     fun getSeasonPaths(): List<String> {
